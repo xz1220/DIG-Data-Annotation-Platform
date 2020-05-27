@@ -1,5 +1,48 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [前后端交互API文档](#%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92api%E6%96%87%E6%A1%A3)
+  - [[toc]](#toc)
+  - [1. 通用url](#1-%E9%80%9A%E7%94%A8url)
+  - [2. 后台返回格式](#2-%E5%90%8E%E5%8F%B0%E8%BF%94%E5%9B%9E%E6%A0%BC%E5%BC%8F)
+    - [1. 登录返回](#1-%E7%99%BB%E5%BD%95%E8%BF%94%E5%9B%9E)
+    - [2. 传递方法](#2-%E4%BC%A0%E9%80%92%E6%96%B9%E6%B3%95)
+  - [3. API](#3-api)
+    - [1. ADMIN](#1-admin)
+      - [(1)User](#1user)
+        - [getUserList](#getuserlist)
+        - [editUser](#edituser)
+        - [addUser](#adduser)
+        - [deleteUser](#deleteuser)
+        - [getPendingUSerList](#getpendinguserlist)
+        - [getListUser](#getlistuser)
+        - [getListReviewer](#getlistreviewer)
+      - [(2)Label](#2label)
+        - [getLabelList](#getlabellist)
+        - [editLabel](#editlabel)
+        - [addLabel](#addlabel)
+        - [deleteLabel](#deletelabel)
+      - [(3)Task](#3task)
+        - [getTaskList](#gettasklist)
+        - [updateTask](#updatetask)
+        - [deleteTask](#deletetask)
+      - [(4)Image](#4image)
+        - [getImgList](#getimglist)
+        - [saveLabel](#savelabel)
+        - [getImg](#getimg)
+        - [saveFinalVersion](#savefinalversion)
+        - [downloadDatas](#downloaddatas)
+        - [splitTask](#splittask)
+      - [统计接口](#%E7%BB%9F%E8%AE%A1%E6%8E%A5%E5%8F%A3)
+    - [2.  User](#2--user)
+    - [3.  Reviewer](#3--reviewer)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 前后端交互API文档
 
+---
 ## 1. 通用url
 - 管理员发送的请求统一为 /api/admin/\*\*  
 - 用户发送的请求统一为   /api/user/\*\*  
@@ -158,6 +201,7 @@
     "imageId":xxx
 }
 ```
+
 后台
 ```
 {
@@ -179,7 +223,7 @@
     ]
 }
 ```
-#####getListUser
+##### getListUser
 前台  
 url:/api/admin/getListUser  
 method:post
@@ -208,7 +252,7 @@ method:post
         }
     ],
 ```
-#####getListReviewer
+##### getListReviewer
 前台   
 url:/api/admin/getListUser  
 method:post  
@@ -233,8 +277,8 @@ method:post
     ]
 }
 ```
-####(2)Label
-#####getLabelList
+#### (2)Label
+##### getLabelList
 前台   
 url:/api/admin/getLabelList  
 method:get  
@@ -261,7 +305,7 @@ method:get
     }
 }
 ```
-#####editLabel
+##### editLabel
 前台  
 url:/api/admin/editLabel  
 method:post  
@@ -281,7 +325,7 @@ method:post
     "data": null
 }
 ```
-#####addLabel
+##### addLabel
 前台  
 url:/api/admin/addLabel  
 method:post
@@ -300,7 +344,7 @@ method:post
     "data": null
 }
 ```
-#####deleteLabel
+##### deleteLabel
 前台  
 url:/api/admin/deleteLabel  
 method:post
@@ -317,8 +361,8 @@ method:post
     "data": null
 }
 ```
-####(3)Task
-#####getTaskList
+#### (3)Task
+##### getTaskList
 前台  
 url:/api/admin/getTaskList  
 method:get  
@@ -373,7 +417,7 @@ method:get
     }
 }
 ```
-#####updateTask  
+##### updateTask  
 url:api/admin/updateTask  
 method:post  
 ```
@@ -393,7 +437,7 @@ method:post
     "data": null
 }
 ```
-#####deleteTask  
+##### deleteTask  
 url:/api/admin/deleteTask  
 method:post  
 ```
@@ -408,8 +452,8 @@ method:post
     "data": null
 }
 ```
-####(4)Image  
-#####getImgList  
+#### (4)Image  
+##### getImgList  
 url:/api/admin/getImgList  
 method:post  
 ```
@@ -503,7 +547,7 @@ method:post
     }
 }
 ```
-#####saveLabel  
+##### saveLabel  
 url:/adi/admin/saveLabel  
 method:Post
 ```
@@ -548,7 +592,7 @@ method:Post
     "data": null
 }
 ```
-#####getImg
+##### getImg
 url:/api/admin/getImg  
 method:post
 ```
@@ -633,7 +677,7 @@ method:post
 }
 ```
 
-#####saveFinalVersion
+##### saveFinalVersion
 url:/api/admin/setFinalVersion  
 method:post
 ```
@@ -649,7 +693,7 @@ method:post
     "data": null
 }
 ```
-#####downloadDatas
+##### downloadDatas
 url:/api/admin/downloadDatas  
 method:post
 ```
@@ -657,7 +701,7 @@ method:post
 "taskId":xxx
 }
 ```
-#####splitTask
+##### splitTask
 url:/api/admin/splitTask  
 method:post
 ```
@@ -666,7 +710,7 @@ method:post
     quantity: quantity
 }
 ```
-####统计接口
+#### 统计接口
 url:/api/admin/getCount  
 method:get  
 {
@@ -681,7 +725,7 @@ method:get
 
 
 
-###2.  User
+### 2.  User
 getTaskList  
 getImgList  
 ```
@@ -697,7 +741,7 @@ saveLabel
 同Admin  
 将url改为/api/user/xxx
 
-###3.  Reviewer
+### 3.  Reviewer
 getTaskList  
 getImgList  
 getImg  
