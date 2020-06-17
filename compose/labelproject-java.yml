@@ -1,0 +1,47 @@
+version: '3.3'
+services: 
+  db: 
+    container_name: mysql
+    image: danxing/mysql:latest
+    environment: 
+      MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.0.2
+    volumes: 
+      - "/home/xingzheng/data/mysql/data:/var/lib/mysql:rw"
+    ports: 
+      - 3306:3306
+
+  cache:
+    container_name: redis
+    image: redis:3.2
+    command: redis-server
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.0.3
+  web:
+    container_name: labelproject-back
+    image: danxing/labelproject-back:2.2.0
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.0.4
+    volumes: 
+      - "/home/xingzheng/data/labelproject/home:/home"
+    ports: 
+      - 8887:8887
+  web-fore:
+    container_name: labelproject-fore-jave
+    image: danxing/labelproject-fore-java:latest
+    networks:
+      extnetwork:
+        ipv4_address: 172.20.0.5
+    ports: 
+      - 8889:80
+
+
+networks:
+   extnetwork:
+      ipam:
+         config:
+         - subnet: 172.20.0.0/16
