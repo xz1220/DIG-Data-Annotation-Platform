@@ -5,7 +5,17 @@
 ## 部署
 ### java 版本
 
-一键部署
+#### 前期准备
+1. 确保安装docker 以及 docker-compose
+2. 克隆前端库，创建镜像
+```
+git clone https://github.com/xz1220/labelproject-foreground-spring.git
+// cd src/model/ && vim Service.js // 修改HOST 对应后端IP地址
+docker build -t <image_name> .
+// vim compose/labelproject-java.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像
+```
+
+#### 一键部署
 ```
 docker-compose -f compose/labelproject-java.yml up 
 ```
