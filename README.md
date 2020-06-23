@@ -1,49 +1,109 @@
 # DIG Data Annotation Platform
 
-![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)
+![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-文档主要用来详细说明前后端的设计实现思路，便于后来者快速上手进行二次开发和维护。
+基于前后端分离的数据标注平台与容器监控系统，支持docker-compose 快速一键部署
 
-## 部署
+##  :crystal_ball: **Visuals**
 
-### java 版本
+**Annotation Platform**
 
-#### 前期准备
+![Annotation-Platform](C:\Users\30249\LabelDoc\meida\Annotation-Platform.png)
 
-1. 确保安装docker 以及 docker-compose
-2. 克隆前端库，创建镜像
-```
+
+
+**Monitor**
+
+![monitor](C:\Users\30249\LabelDoc\meida\monitor.png)
+
+##  🍕 **Requirements**
+
+### Monitor
+
+- docker-ce
+- docker-compose
+
+### Annotation Platform
+
+#### SpringBoot+Vue.js
+
+- jdk >=1.8
+- Mysql Version == 5.7 or 8.0
+
+#### Gin + Vue.js
+
+- Golang version >= 1.13
+- Gin v1
+- Gorm v1
+
+
+
+##  🚍 **Installation**
+
+### 🚀 Quick Start
+
+####  Annotation Platform ： SpringBoot + Vue.js
+
+**Preparation**
+
+- 确保安装docker 以及 docker-compose
+
+- 克隆前端库，创建镜像
+
+```shell
 git clone https://github.com/xz1220/labelproject-foreground-spring.git
-// cd src/model/ && vim Service.js && cnpm install && cnpm run build // 修改HOST 对应后端IP地址 
+cd src/model/ && vim Service.js // 修改HOST 对应后端IP地址 
+cnpm install && cnpm run build 
 docker build -t <image_name> .
-// vim compose/labelproject-java.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像
+vim compose/labelproject-java.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像，按需修改容器volume
 ```
 
-#### 一键部署
+**Installation By docker-compose**
+
+```shell
+docker-compose -f compose/labelproject-java.yml up // 后端端口绑定8887 前端端口绑定8889 
 ```
-docker-compose -f compose/labelproject-java.yml up 
-```
-*特点*
+##### Features
+
 - mysql 容器启动后 数据表自动创建，绑定主机 3306 端口
 - labelproject-back (sping 后端程序) 容器启动后 图片数据存放目录自动创建, 自动连接mysql数据库与redis数据库，绑定主机8887端口
-- 前端绑定8889端口
+
+#### Monitor 
+
+**Preparation** 
+
+- 确保安装docker 以及 docker-compose
+
+**Installation**
+
+```shell
+git clone https://github.com/xz1220/LabelDoc.git 
+cd LabelDoc/monitor
+docker-compose -f monitor.yml up
+```
 
 
-## 设计思路
-这一部分我们详细说明前后的设计思路。主要说明前后端内各个模块的作用。以及前后端API接口。
-### 前端
 
-### 后端
+##  🚩 **Usage**
 
-## 实现
+#### 🖼 Annotation Platform
 
-### 前端
-基于Vue.js 实现
-### 后端
-后端部分有两个实现版本，基于SpringBoot的JAVA版本和基于GIN框架的Golang版本，二者设计思路完全一致，是上述设计的不同实现。
-#### 基于SpringBoot
+- 前端入口  : http://localhost:8889
+- 初始化用户名：admin 密码：admin
 
-### 基于GIN
+### 🖥 Monitor
 
-## 基础知识
-记录一些背景知识以及学习资料，非必看。
+- 入口 ： http://localhost:8888
+- 初始化数据库
+  - URL：http://172.23.0.2:8086
+  - 用户名免密为空
+- 选取默认面板进入系统
+
+
+
+## Reference
+
+[Docker Document](https://docs.docker.com/)
+
+[Golang Document](https://golang.org/doc/)
+
