@@ -1,8 +1,11 @@
 # DIG Data Annotation Platform
 
+![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)
+
 文档主要用来详细说明前后端的设计实现思路，便于后来者快速上手进行二次开发和维护。
 
 ## 部署
+
 ### java 版本
 
 #### 前期准备
