@@ -8,13 +8,13 @@ A efficient Data Annotation Platform for Computer Vision Tasks with a container 
 
 **Annotation Platform**
 
-![Annotation-Platform](C:/Users/30249/LabelDoc/meida/Annotation-Platform.png)
+![Annotation-Platform](./meida/Annotation-Platform.png)
 
 
 
 **Monitor**
 
-![monitor](C:/Users/30249/LabelDoc/meida/monitor.png)
+![monitor](./meida/monitor.png)
 
 ##  🍕 **Requirements**
 
