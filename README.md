@@ -2,25 +2,25 @@
 
 ![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-基于前后端分离的数据标注平台与容器监控系统，支持docker-compose 快速一键部署
+A efficient Data Annotation Platform for Computer Vision Tasks with a container monitoring system.
 
 ##  :crystal_ball: **Visuals**
 
 **Annotation Platform**
 
-![Annotation-Platform](./meida/Annotation-Platform.png)
+![Annotation-Platform](C:/Users/30249/LabelDoc/meida/Annotation-Platform.png)
 
 
 
 **Monitor**
 
-![monitor](./meida/monitor.png)
+![monitor](C:/Users/30249/LabelDoc/meida/monitor.png)
 
 ##  🍕 **Requirements**
 
 ### Monitor
 
-- docker-ce
+- docker-ce 
 - docker-compose
 
 ### Annotation Platform
@@ -46,33 +46,34 @@
 
 **Preparation**
 
-- 确保安装docker 以及 docker-compose
+- make sure you have installed docker-ce and docker-compose
 
-- 克隆前端库，创建镜像
+- Clone library from Github and build a new image
 
 ```shell
 git clone https://github.com/xz1220/labelproject-foreground-spring.git
-cd src/model/ && vim Service.js // 修改HOST 对应后端IP地址 
+cd src/model/ && vim Service.js // modify HOST to the IP address of back-end 
 cnpm install && cnpm run build 
 docker build -t <image_name> .
-vim compose/labelproject-java.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像，按需修改容器volume
+vim compose/labelproject-java.yml // modify web-fore.image to the new fore-end image name
 ```
 
 **Installation By docker-compose**
 
 ```shell
-docker-compose -f compose/labelproject-java.yml up // 后端端口绑定8887 前端端口绑定8889 
+docker-compose -f compose/labelproject-java.yml up // back-end: bind port to 8887 fore-end: bind port to 8889 
 ```
+
 ##### Features
 
-- mysql 容器启动后 数据表自动创建，绑定主机 3306 端口
-- labelproject-back (sping 后端程序) 容器启动后 图片数据存放目录自动创建, 自动连接mysql数据库与redis数据库，绑定主机8887端口
+- Database (labelproject) and related tables will be created automatically after starting MYSQL container.
+- labelproject-back(spring-boot) will automatically create a directory to hold the files and connect to the MYSQL and Redis after cteated.
 
 #### Monitor 
 
 **Preparation** 
 
-- 确保安装docker 以及 docker-compose
+- make sure you have installed docker-ce and docker-compose
 
 **Installation**
 
@@ -88,18 +89,16 @@ docker-compose -f monitor.yml up
 
 #### 🖼 Annotation Platform
 
-- 前端入口  : http://localhost:8889
-- 初始化用户名：admin 密码：admin
+- Fore-end URL  : http://localhost:8889
+- Initialized user name ：admin  password ：admin
 
 ### 🖥 Monitor
 
-- 入口 ： http://localhost:8888
-- 初始化数据库
+-  Fore-end URL： http://localhost:8888
+-  Database initialization parameters
   - URL：http://172.23.0.2:8086
-  - 用户名免密为空
-- 选取默认面板进入系统
-
-
+  - Username and password are empty
+- Select the default dashboard
 
 ## Reference
 
