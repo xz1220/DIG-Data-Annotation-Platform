@@ -1,0 +1,80 @@
+version: '3.3'
+
+volumes:
+  grafana_data: {}
+  
+
+services:
+  influxdb:
+    image: docker.io/influxdb
+    #image: tutum/influxdb
+    #image: influxdb
+    restart: always
+    #user: 
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    expose:
+      - "8090"
+      - "8099"
+      - "8086"
+      - "8083"
+    networks:
+      monitor:
+        ipv4_address: 172.23.0.2
+    volumes:
+      - /var/lib/influxdb:/var/lib/influxdb
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf
+
+  telegraf:
+    image: docker.io/telegraf
+    links:
+      - influxdb:influxsrv
+    networks:
+      monitor:
+        ipv4_address: 172.23.0.3
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    environment:
+      - influxdb-url=influxsrv:8086
+
+  chronograf:
+    image: docker.io/chronograf
+    ports:
+      - "8888:8888"
+    links:
+      - influxdb:influxsrv
+    networks:
+      monitor:
+        ipv4_address: 172.23.0.4
+    volumes:
+      - /var/lib/chronograf:/var/lib/chronograf
+
+  kapacitor:
+    image: docker.io/kapacitor
+    ports:
+      - "9092:9092"
+    links:
+      - influxdb:influxsrv
+    networks:
+      monitor:
+        ipv4_address: 172.23.0.5
+    volumes:
+      - /var/lib/kapacitor:/var/lib/kapacitor
+    environment:
+      - influxdb-url=influxsrv:8086
+      - KAPACITOR_HOSTNAME=kapacitor
+      - KAPACITOR_LOGGING_LEVEL=INFO
+      - KAPACITOR_REPORTING_ENABLED=false
+      - KAPACITOR_INFLUXDB_0_URLS_0=http://influxsrv:8086
+
+
+networks:
+   monitor:
+      ipam:
+         config:
+         - subnet: 172.23.0.0/16

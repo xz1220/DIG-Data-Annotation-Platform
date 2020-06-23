@@ -32,7 +32,7 @@ services:
       - 8887:8887
   web-fore:
     container_name: labelproject-fore-jave
-    image: danxing/labelproject-fore-java:latest
+    image: labelproject-fore-spring:latest
     networks:
       extnetwork:
         ipv4_address: 172.20.0.5

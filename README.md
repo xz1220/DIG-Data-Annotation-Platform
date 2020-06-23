@@ -1,4 +1,4 @@
-# 文档
+# DIG Data Annotation Platform
 
 文档主要用来详细说明前后端的设计实现思路，便于后来者快速上手进行二次开发和维护。
 
@@ -6,11 +6,12 @@
 ### java 版本
 
 #### 前期准备
+
 1. 确保安装docker 以及 docker-compose
 2. 克隆前端库，创建镜像
 ```
 git clone https://github.com/xz1220/labelproject-foreground-spring.git
-// cd src/model/ && vim Service.js // 修改HOST 对应后端IP地址
+// cd src/model/ && vim Service.js && cnpm install && cnpm run build // 修改HOST 对应后端IP地址 
 docker build -t <image_name> .
 // vim compose/labelproject-java.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像
 ```
