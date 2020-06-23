@@ -2,6 +2,8 @@
 
 ![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
+> English | [中文](./README_zh.md)
+
 A efficient Data Annotation Platform for Computer Vision Tasks with a container monitoring system.
 
 ##  :crystal_ball: **Visuals**
