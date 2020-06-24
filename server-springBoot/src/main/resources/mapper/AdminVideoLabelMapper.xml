@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uestc.labelproject.dao.AdminVideoLabelMapper">
+
+    <resultMap id="BaseResultMap" type="com.uestc.labelproject.entity.TempVideoLabel">
+        <id column="label_id" jdbcType="BIGINT" property="labelId"/>
+        <result column="question" jdbcType="VARCHAR" property="question"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="selector" jdbcType="VARCHAR" property="selector"/>
+    </resultMap>
+    <sql id="insertKey">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="question != null">
+                question,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="selector != null">
+                selector,
+            </if>
+        </trim>
+    </sql>
+    <sql id="insertValue">
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="question!=null">
+                #{question},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="selector != null">
+                #{selector},
+            </if>
+        </trim>
+    </sql>
+    <insert id="addVideoLabel" parameterType="com.uestc.labelproject.entity.TempVideoLabel">
+        insert into videolabel <include refid="insertKey"/> <include refid="insertValue"/>
+    </insert>
+
+    <select id="getVideoLabelList" resultMap="BaseResultMap">
+        select * from videolabel
+    </select>
+
+    <update id="editVideoLabel" parameterType="com.uestc.labelproject.entity.TempVideoLabel">
+        update videolabel
+        <set>
+            <trim>
+                <if test="question != null">
+                    question = #{question},
+                </if>
+                <if test="type != null">
+                    type = #{type},
+                </if>
+                <if test="selector != null">
+                    selector = #{selector},
+                </if>
+            </trim>
+        </set>
+        where label_id = #{labelId}
+    </update>
+
+    <delete id="deleteVideoLabel" parameterType="com.uestc.labelproject.entity.VideoLabel">
+        delete from videolabel where label_id = #{labelId}
+    </delete>
+
+    <select id="getVideoLabelsByVideoId" resultMap="BaseResultMap">
+        select * from videolabel where label_id in (select label_id from tasklabelinfo where task_id = (select task_id from video where video_id = #{videoId}))
+    </select>
+
+</mapper>
