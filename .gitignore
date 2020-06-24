@@ -33,5 +33,24 @@
 ## jar
 /server-springBoot/src/main/docker/*.jar
 
+# front-end
+/front-end/.DS_Store
+/front-end/node_modules/
+/front-end/dist/
+/front-end/npm-debug.log*
+/front-end/yarn-debug.log*
+/front-end/yarn-error.log*
+/front-end/test/unit/coverage/
+
+# Editor directories and files
+/front-end/.idea
+/front-end/.vscode
+/front-end/*.suo
+/front-end/*.ntvs*
+/front-end/*.njsproj
+/front-end/*.sln
+
+/front-end/*.old
+
 
 _book/*
