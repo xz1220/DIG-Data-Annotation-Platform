@@ -71,7 +71,7 @@ docker-compose -f compose/labelproject-java.yml up // back-end: bind port to 888
 - Database (labelproject) and related tables will be created automatically after starting MYSQL container.
 - labelproject-back(spring-boot) will automatically create a directory to hold the files and connect to the MYSQL and Redis after cteated.
 
-#### Monitor 
+#### Monitor
 
 **Preparation** 
 
@@ -89,12 +89,12 @@ docker-compose -f monitor.yml up
 
 ##  🚩 **Usage**
 
-#### 🖼 Annotation Platform
+#### 🖼 Annotation Platform （installed locally)
 
 - Fore-end URL  : http://localhost:8889
 - Initialized user name ：admin  password ：admin
 
-### 🖥 Monitor
+### 🖥 Monitor (installed locally)
 
 -  Fore-end URL： http://localhost:8888
 -  Database initialization parameters
