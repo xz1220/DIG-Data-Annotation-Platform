@@ -1,4 +1,4 @@
-/server-springBoot/HELP.md
+/server-springBoot
 /server-springBoot/target/
 !/server-springBoot/.mvn/wrapper/maven-wrapper.jar
 !/server-springBoot/**/src/main/**
