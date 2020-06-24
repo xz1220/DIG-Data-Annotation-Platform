@@ -1,0 +1,177 @@
+---
+- name: Master | get coredns configmap
+  shell: >
+    {{ bin_dir }}/kubectl get cm -n kube-system coredns -o json > /tmp/coredns-cm-{{ kube_version }}.json
+  when: inventory_hostname == groups['kube-master']|first
+
+- name: Master | reload systemd
+  systemd:
+    daemon_reload: true
+  when: inventory_hostname == groups['kube-master']|first
+
+- name: Master | reload kubelet
+  service:
+    name: kubelet
+    state: restarted
+  when: inventory_hostname == groups['kube-master']|first
+
+- wait_for:
+    timeout: 30
+  when: inventory_hostname == groups['kube-master']|first
+
+- name: kubeadm | Upgrade first master
+  command: >-
+    timeout -k 600s 600s
+    {{ bin_dir }}/kubeadm
+    upgrade apply -y {{ kube_version }}
+    --config={{ kube_config_dir }}/kubeadm-config.yaml
+    --ignore-preflight-errors=all
+    {% if kubeadm_version is version('v1.15.0', '>=') %}
+    --certificate-renewal=true
+    {% endif %}
+    --allow-experimental-upgrades
+    --allow-release-candidate-upgrades
+    --etcd-upgrade=false
+    --force
+  register: kubeadm_upgrade
+  # Retry is because upload config sometimes fails
+  retries: 3
+  when: inventory_hostname == groups['kube-master']|first
+  failed_when: kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+  notify: Master | restart kubelet
+  ignore_errors: True
+
+- name: Master | reload systemd
+  systemd:
+    daemon_reload: true
+  when:
+    - inventory_hostname == groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+
+- name: Master | reload kubelet
+  service:
+    name: kubelet
+    state: restarted
+  when:
+    - inventory_hostname == groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+
+- name: wait for retry Upgrade
+  wait_for:
+    timeout: 30
+  when:
+    - inventory_hostname == groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+
+- name: kubeadm | Upgrade first master (retry)
+  command: >-
+    timeout -k 600s 600s
+    {{ bin_dir }}/kubeadm
+    upgrade apply -y {{ kube_version }}
+    --config={{ kube_config_dir }}/kubeadm-config.yaml
+    --ignore-preflight-errors=all
+    {% if kubeadm_version is version('v1.15.0', '>=') %}
+    --certificate-renewal=true
+    {% endif %}
+    --allow-experimental-upgrades
+    --allow-release-candidate-upgrades
+    --etcd-upgrade=false
+    --force
+  register: kubeadm_upgrade_retry
+  # Retry is because upload config sometimes fails
+  retries: 3
+  when:
+    - inventory_hostname == groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+  failed_when: kubeadm_upgrade_retry.rc != 0 and "field is immutable" not in kubeadm_upgrade_retry.stderr
+  notify: Master | restart kubelet
+
+# FIXME: https://github.com/kubernetes/kubeadm/issues/1498 remove stdout_lines
+# check after issue is fixed
+
+- name: Master | reload systemd
+  systemd:
+    daemon_reload: true
+  when: inventory_hostname != groups['kube-master']|first
+
+- name: Master | reload kubelet
+  service:
+    name: kubelet
+    state: restarted
+  when: inventory_hostname != groups['kube-master']|first
+
+- wait_for:
+    timeout: 30
+  when: inventory_hostname != groups['kube-master']|first
+
+- name: kubeadm | Upgrade other masters
+  command: >-
+    timeout -k 600s 600s
+    {{ bin_dir }}/kubeadm
+    upgrade apply -y {{ kube_version }}
+    --config={{ kube_config_dir }}/kubeadm-config.yaml
+    --ignore-preflight-errors=all
+    {% if kubeadm_version is version('v1.15.0', '>=') %}
+    --certificate-renewal=true
+    {% endif %}
+    --allow-experimental-upgrades
+    --allow-release-candidate-upgrades
+    --etcd-upgrade=false
+    --force
+  register: kubeadm_upgrade
+  when: inventory_hostname != groups['kube-master']|first
+  failed_when:
+    - kubeadm_upgrade.rc != 0
+    - '"field is immutable" not in kubeadm_upgrade.stderr'
+    - kubeadm_upgrade.stdout_lines | length > 1
+  notify: Master | restart kubelet
+  ignore_errors: True
+
+- name: Master | reload systemd
+  systemd:
+    daemon_reload: true
+  when:
+    - inventory_hostname != groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+
+- name: Master | reload kubelet
+  service:
+    name: kubelet
+    state: restarted
+  when:
+    - inventory_hostname != groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+
+- name: wait for retry Upgrade
+  wait_for:
+    timeout: 30
+  when:
+    - inventory_hostname != groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+
+- name: kubeadm | Upgrade other masters (retry)
+  command: >-
+    timeout -k 600s 600s
+    {{ bin_dir }}/kubeadm
+    upgrade apply -y {{ kube_version }}
+    --config={{ kube_config_dir }}/kubeadm-config.yaml
+    --ignore-preflight-errors=all
+    {% if kubeadm_version is version('v1.15.0', '>=') %}
+    --certificate-renewal=true
+    {% endif %}
+    --allow-experimental-upgrades
+    --allow-release-candidate-upgrades
+    --etcd-upgrade=false
+    --force
+  register: kubeadm_upgrade_retry
+  when:
+    - inventory_hostname != groups['kube-master']|first
+    - kubeadm_upgrade.rc != 0 and "field is immutable" not in kubeadm_upgrade.stderr
+  failed_when:
+    - kubeadm_upgrade_retry.rc != 0
+    - '"field is immutable" not in kubeadm_upgrade_retry.stderr'
+    - kubeadm_upgrade_retry.stdout_lines | length > 1
+  notify: Master | restart kubelet
+
+- wait_for:
+    timeout: 30

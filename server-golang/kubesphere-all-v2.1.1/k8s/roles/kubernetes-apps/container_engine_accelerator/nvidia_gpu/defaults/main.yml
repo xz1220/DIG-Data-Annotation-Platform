@@ -1,0 +1,14 @@
+---
+nvidia_accelerator_enabled: false
+nvidia_driver_version: "387.26"
+nvidia_gpu_tesla_base_url: https://dl-test.sh1a.qingstor.com/
+nvidia_gpu_gtx_base_url: https://dl-test.sh1a.qingstor.com/
+nvidia_gpu_flavor: tesla
+nvidia_url_end: "NVIDIA-Linux-x86_64-{{ nvidia_driver_version }}.run"
+nvidia_driver_install_container: true
+nvidia_driver_install_centos_container: atzedevries/nvidia-centos-driver-installer:2
+nvidia_driver_install_ubuntu_container: gcr.azk8s.cn/google-containers/ubuntu-nvidia-driver-installer@sha256:7df76a0f0a17294e86f691c81de6bbb7c04a1b4b3d4ea4e7e2cccdc42e1f6d63
+nvidia_driver_install_supported: true
+nvidia_gpu_device_plugin_container: kubespheredev/nvidia-gpu-device-plugin:20191106
+nvidia_gpu_nodes: []
+nvidia_gpu_device_plugin_memory: 30Mi

@@ -1,0 +1,18 @@
+{
+    "annotations":[],
+    "categories":[
+        {
+            "id":1,
+            "name":"Test1",
+            "supercategory":"Test1"
+        },
+        {
+            "id":2,
+            "name":"Test2",
+            "supercategory":"Test2"
+        }
+        ],
+    "images":[],
+    "info":{
+            "date_created":"2020-06-22_13-12-18",
+            "year":2020}}

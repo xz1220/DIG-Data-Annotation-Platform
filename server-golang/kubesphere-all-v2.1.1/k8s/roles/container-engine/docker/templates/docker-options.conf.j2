@@ -1,0 +1,6 @@
+[Service]
+Environment="DOCKER_OPTS={{ docker_options|default('') }} {% if harbor_enabled is defined and harbor_enabled == true %}--insecure-registry={{ harbor_domain }}:30280{% endif %} "
+
+{% if docker_mount_flags is defined and docker_mount_flags != "" %}
+MountFlags={{ docker_mount_flags }}
+{% endif %}

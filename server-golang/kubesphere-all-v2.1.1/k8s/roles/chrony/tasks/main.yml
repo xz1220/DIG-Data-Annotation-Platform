@@ -1,0 +1,63 @@
+- name: apt cache
+  apt: update_cache=yes cache_valid_time=72000
+  ignore_errors: true
+  when: 
+  - 'ansible_distribution in ["Ubuntu","Debian"]'
+  
+- name: apt remove ntp
+  yum:
+    name: ntp
+    state: absent
+  when: 'ansible_distribution in ["CentOS","RedHat"]'
+  args:
+      warn: false
+  ignore_errors: true 
+
+- name: apt remove ntp
+  apt:
+    name: ntp
+    state: absent
+  when: 'ansible_distribution in ["Ubuntu","Debian"]'
+  ignore_errors: true
+
+- name: install chrony
+  package: name=chrony state=present
+
+
+- block:
+  - name: conf chrony server 
+    template: src=server-centos.conf.j2 dest=/etc/chrony.conf
+    when: 'ansible_distribution in ["CentOS","RedHat"]' 
+
+  - name: conf chrony server
+    template: src=server-ubuntu.conf.j2 dest=/etc/chrony/chrony.conf
+    when: 'ansible_distribution in ["Ubuntu","Debian"]' 
+
+  - name: start chrony server
+    service: name=chronyd state=restarted enabled=yes
+    when: 'ansible_distribution in ["CentOS","RedHat"]' 
+
+  - name: start chrony server
+    service: name=chrony state=restarted enabled=yes
+    when: 'ansible_distribution in ["Ubuntu","Debian"]' 
+  when: 'inventory_hostname == groups["kube-master"][0]'
+
+- block:
+  - name: conf chrony client
+    template: src=client-centos.conf.j2 dest=/etc/chrony.conf
+    when: 'ansible_distribution in ["CentOS","RedHat"]' 
+
+  - name: conf chrony client
+    template: src=client-ubuntu.conf.j2 dest=/etc/chrony/chrony.conf
+    when: 'ansible_distribution in ["Ubuntu","Debian"]' 
+
+  - name: restart chrony client 
+    service: name=chronyd state=restarted enabled=yes
+    when: 'ansible_distribution in ["CentOS","RedHat"]' 
+
+  - name: start chrony client
+    service: name=chrony state=restarted enabled=yes
+    when: 'ansible_distribution in ["Ubuntu","Debian"]' 
+  when: 'inventory_hostname != groups["kube-master"][0]'
+
+

@@ -52,5 +52,11 @@
 
 /front-end/*.old
 
+# Server-Golang
+/server-golang/.vscode/
+/server-golang/.idea/
+/server-golang/.vscode/settings.json
+/server-golang/.vscode/settings.json
+
 
 _book/*

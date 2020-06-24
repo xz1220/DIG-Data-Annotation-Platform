@@ -1,0 +1,5 @@
+---
+first_kube_master: "{{ hostvars[groups['kube-master'][0]]['access_ip'] | default(hostvars[groups['kube-master'][0]]['ip'] | default(hostvars[groups['kube-master'][0]]['ansible_default_ipv4']['address'])) }}"
+
+# as"10.0.0.0/8"，default all accept
+#local_network: "0.0.0.0/0"
