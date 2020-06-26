@@ -1308,6 +1308,86 @@ func DownloadData(ctx *gin.Context) {
 	responseTemp.Categories = append(responseTemp.Categories, categories)
 	util.Success(ctx, responseTemp, "SUCCESS")
 
+	adminImageRepositoryInstance := repository.AdminImageRepositoryInstance(db)
+	adminImageLabelRepository := repository.AdminImageLabelRepository(db)
+
+	switch tempData.TaskID {
+	case 1:
+		log.Println(" 开始下载图片数据！")
+		images, err := adminImageRepositoryInstance.GetImageList(tempData.TaskID)
+		if err != nil {
+			ErrorString := ctx.Request.URL.String() + " Case1 : GetImageList  Error !!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		if len(images) == 0 {
+			ErrorString := ctx.Request.URL.String() + " Case1: 图片不存在!!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		labels, err := adminImageLabelRepository.GetLabelByImageID(images[0].ImageID)
+		if len(labels) == 0 {
+			ErrorString := ctx.Request.URL.String() + " Case1: 标签不存在 下载失败!!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		cocoDataSet := model.CocoDataSet{}
+		cocoInfo := model.CocoInfo{
+			Year:        "",
+			DataCreated: "",
+		}
+		cocoDataSet.Info = cocoInfo
+
+		cocoAnnotations := []model.CocoAnnotation{}
+		cocoCategories := []model.CocoCategory{}
+		cocoImages := []model.CocoImage{}
+
+		for _, image := range images {
+			if image.UserComfirmID == 0 {
+				continue
+			}
+
+			datas, _ := adminImageRepositoryInstance.GetDatas(image.UserComfirmID, image.ImageID)
+			if len(datas) == 0 {
+				continue
+			}
+			cocoImage := model.CocoImage{
+				FileName: image.ImageName,
+				Height:   image.Height,
+				Width:    image.Width,
+				ID:       image.ImageID,
+			}
+			cocoImages = append(cocoImages, cocoImage)
+
+			for _, data := range datas {
+				cocoAnnotation := model.CocoAnnotation{
+					ID:         data.DataID,
+					ImageID:    int64(data.ImageID),
+					CategoryID: int64(data.LabelID),
+				}
+
+				cocoAnnotations = append(cocoAnnotations, cocoAnnotation)
+			}
+		}
+
+		cocoDataSet.Annotations = cocoAnnotations
+		cocoDataSet.Images = cocoImages
+
+		for _, label := range labels {
+			cocoCategory := model.CocoCategory{
+				ID:   label.LabelID,
+				Name: label.LabelName,
+			}
+		}
+
+	}
+
 	// ctx.Request.Response.Body =
 	// extraHeaders := map[string]string{
 	// 	"Content-Disposition": `attachment; filename="hello.txt"`,

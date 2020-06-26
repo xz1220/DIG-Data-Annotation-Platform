@@ -124,3 +124,39 @@ type DataForResponse struct {
 
 	Point []Points `json:"point"`
 }
+
+type CocoInfo struct {
+	Year        int64  `json:"year"`
+	DataCreated string `json:"data_created"`
+}
+
+type CocoImage struct {
+	ID       int64  `json:"id"`
+	FileName string `json:"file_name"`
+	Width    int64  `json:"width"`
+	Height   int64  `json:"height"`
+}
+
+type CocoAnnotation struct {
+	ID           int64     `json:"id"`
+	ImageID      int64     `json:"image_id"`
+	CategoryID   int64     `json:"category_id"`
+	Area         float64   `json:"area"`
+	Iscrowd      int       `json:"iscrowd"`
+	Segmentation string    `json:"segmentation"`
+	BBox         []float64 `json:"bbox"`
+	Desc         string    `json:"desc"`
+}
+
+type CocoCategory struct {
+	SuperCategory string `json:"supercategory"`
+	ID            int64  `json:"id"`
+	Name          string `json:"name"`
+}
+
+type CocoDataSet struct {
+	Info        CocoInfo         `json:"info"`
+	Images      []CocoImage      `json:"images"`
+	Annotations []CocoAnnotation `json:"annotations"`
+	Categories  []CocoCategory   `json:"categories"`
+}
