@@ -49,6 +49,9 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
+	cookie := http.Cookie{Name: "request_token", Value: "6MIhycayVQizGoweGhRvUFVARhAARiTyJ1NS6YNfiuQJ1ZHU", Expires: time.Now().AddDate(0, 0, 1)}
+	http.SetCookie(ctx.Writer, &cookie)
+
 	redisUtilInstance := util.RedisUtilInstance(cache)
 	log.Println(ctx.Request.RemoteAddr)
 	err = redisUtilInstance.AddTokenTORedis(token, requestMap.Username, ctx.Request.RemoteAddr)

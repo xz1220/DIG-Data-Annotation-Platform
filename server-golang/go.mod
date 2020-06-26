@@ -9,9 +9,11 @@ require (
 	github.com/go-redis/redis v6.15.8+incompatible
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang/protobuf v1.3.3 // indirect
+	github.com/gorilla/websocket v1.4.0
 	github.com/jinzhu/gorm v1.9.12
 	github.com/onsi/ginkgo v1.10.1 // indirect
 	github.com/onsi/gomega v1.7.0 // indirect
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.6.2
 	golang.org/x/image v0.0.0-20200618115811-c13761719519 // indirect
 	golang.org/x/net v0.0.0-20190923162816-aa69164e4478 // indirect

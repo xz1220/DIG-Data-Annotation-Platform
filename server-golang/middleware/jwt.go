@@ -6,6 +6,7 @@ import (
 	"labelproject-back/model"
 	"labelproject-back/util"
 	"log"
+	"net/http"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
@@ -83,6 +84,13 @@ func TokenIsExpiration(expirationTime string) (bool, error) {
 
 func JwtAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		cookie, _ := c.Request.Cookie("request_token")
+		if cookie == nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"msg": "请先登陆"})
+			c.Abort()
+		}
+
 		authorization := c.Request.Header.Get("Authorization")
 		// var username string = ""
 		// log.Println("Authorization：", authorization)

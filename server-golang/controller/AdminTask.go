@@ -15,7 +15,6 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	repository "labelproject-back/Repository"
 	"labelproject-back/common"
 	"labelproject-back/model"
@@ -1244,10 +1243,11 @@ func DownloadData(ctx *gin.Context) {
 
 	ctx.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 	// ctx.Header("content-type", "application/json;charset=utf-8")
+	ctx.Header("Content-Type", "application/octet-stream")
 
 	db := common.GetDB()
 	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
-	_, err := adminTaskRepositoryInstance.GetTaskByID(tempData.TaskID)
+	task, err := adminTaskRepositoryInstance.GetTaskByID(tempData.TaskID)
 	if err != nil {
 		ErrorString := ctx.Request.URL.String() + "GetTaskByID error!!!"
 		log.Println(ErrorString)
@@ -1255,65 +1255,14 @@ func DownloadData(ctx *gin.Context) {
 		return
 	}
 
-	content := "hello world, 我是一个文件，"
-	strings.NewReader(content)
-
-	os.Create("./hello.txt")
-	err = ioutil.WriteFile("./hello.txt", []byte(content), os.ModePerm)
-	// ctx.Writer.WriteHeader(http.StatusOK)
-	ctx.Header("Content-Disposition", "attachment; filename=hello.txt")
-	// ctx.Header("Content-Type", "application/text/plain")
-	ctx.Header("Accept-Length", fmt.Sprintf("%d", len(content)))
-	ctx.Header("Content-Type", "application/octet-stream")
-	ctx.Header("Expires", "0")
-	// ctx.File("./hello.txt")
-
-	// ctx.File("./hello.txt")
-
-	type Category struct {
-		ID            int64  `json:"id"`
-		Name          string `json:"name"`
-		Supercategory string `json:"supercategory"`
-	}
-
-	type Infor struct {
-		DateCreated string `json:"date_created"`
-		Year        int64  `json:"year"`
-	}
-
-	type ResponseTemp struct {
-		Annotations []int64    `json:"annotations"`
-		Categories  []Category `json:"categories"`
-		Images      []int64    `json:"images"`
-		Info        Infor
-	}
-
-	categories := Category{
-		ID:            1,
-		Name:          "Test1",
-		Supercategory: "Test1",
-	}
-
-	info := Infor{
-		DateCreated: "2020-06-22_13-12-18",
-		Year:        2020,
-	}
-
-	responseTemp := ResponseTemp{
-		Annotations: []int64{},
-		Images:      []int64{},
-		Info:        info,
-	}
-
-	responseTemp.Categories = append(responseTemp.Categories, categories)
-	util.Success(ctx, responseTemp, "SUCCESS")
-
 	adminImageRepositoryInstance := repository.AdminImageRepositoryInstance(db)
-	adminImageLabelRepository := repository.AdminImageLabelRepository(db)
+	adminImageLabelRepository := repository.AdminImageLabelRepositoryInstance(db)
 
-	switch tempData.TaskID {
+	// log.Println("tempData.TaskID:", tempData.TaskID)
+
+	switch task.TaskType {
 	case 1:
-		log.Println(" 开始下载图片数据！")
+		log.Println(" 开始下载图片数据！ case1")
 		images, err := adminImageRepositoryInstance.GetImageList(tempData.TaskID)
 		if err != nil {
 			ErrorString := ctx.Request.URL.String() + " Case1 : GetImageList  Error !!!"
@@ -1339,7 +1288,7 @@ func DownloadData(ctx *gin.Context) {
 
 		cocoDataSet := model.CocoDataSet{}
 		cocoInfo := model.CocoInfo{
-			Year:        "",
+			Year:        0,
 			DataCreated: "",
 		}
 		cocoDataSet.Info = cocoInfo
@@ -1349,6 +1298,7 @@ func DownloadData(ctx *gin.Context) {
 		cocoImages := []model.CocoImage{}
 
 		for _, image := range images {
+			log.Println("case1: 进入images循环")
 			if image.UserComfirmID == 0 {
 				continue
 			}
@@ -1366,6 +1316,7 @@ func DownloadData(ctx *gin.Context) {
 			cocoImages = append(cocoImages, cocoImage)
 
 			for _, data := range datas {
+				log.Println("case1: 进入datas循环")
 				cocoAnnotation := model.CocoAnnotation{
 					ID:         data.DataID,
 					ImageID:    int64(data.ImageID),
@@ -1381,18 +1332,250 @@ func DownloadData(ctx *gin.Context) {
 
 		for _, label := range labels {
 			cocoCategory := model.CocoCategory{
-				ID:   label.LabelID,
-				Name: label.LabelName,
+				ID:            label.LabelID,
+				Name:          label.LabelName,
+				SuperCategory: label.LabelName,
+			}
+			cocoCategories = append(cocoCategories, cocoCategory)
+		}
+
+		cocoDataSet.Categories = cocoCategories
+
+		filename := task.TaskName + "json"
+		ctx.Header("Content-Disposition", "attachment; filename="+filename)
+		ctx.Header("Pragma", "no-cache")
+		ctx.Header("Expires", "0")
+
+		util.Success(ctx, cocoDataSet, "SUCCESS")
+		return
+	case 2, 3:
+		log.Println(" case2,3:开始下载图片数据！")
+		images, err := adminImageRepositoryInstance.GetImageList(tempData.TaskID)
+		if err != nil {
+			ErrorString := ctx.Request.URL.String() + " Case1 : GetImageList  Error !!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		if len(images) == 0 {
+			ErrorString := ctx.Request.URL.String() + " Case1: 图片不存在!!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		labels, err := adminImageLabelRepository.GetLabelByImageID(images[0].ImageID)
+		if len(labels) == 0 {
+			ErrorString := ctx.Request.URL.String() + " Case1: 标签不存在 下载失败!!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		cocoDataSet := model.CocoDataSet{}
+		cocoInfo := model.CocoInfo{
+			Year:        0,
+			DataCreated: "",
+		}
+		cocoDataSet.Info = cocoInfo
+
+		cocoAnnotations := []model.CocoAnnotation{}
+		cocoCategories := []model.CocoCategory{}
+		cocoImages := []model.CocoImage{}
+
+		for _, image := range images {
+			log.Println("case1: 进入images循环")
+			if image.UserComfirmID == 0 {
+				continue
+			}
+
+			datas, _ := adminImageRepositoryInstance.GetDatas(image.UserComfirmID, image.ImageID)
+			if len(datas) == 0 {
+				continue
+			}
+			cocoImage := model.CocoImage{
+				FileName: image.ImageName,
+				Height:   image.Height,
+				Width:    image.Width,
+				ID:       image.ImageID,
+			}
+			cocoImages = append(cocoImages, cocoImage)
+
+			for _, data := range datas {
+				log.Println("case1: 进入datas循环")
+				cocoAnnotation := model.CocoAnnotation{
+					ID:           data.DataID,
+					ImageID:      int64(data.ImageID),
+					CategoryID:   int64(data.LabelID),
+					Segmentation: util.GenPolygonData(data.Point),
+				}
+
+				cocoAnnotations = append(cocoAnnotations, cocoAnnotation)
 			}
 		}
 
+		cocoDataSet.Annotations = cocoAnnotations
+		cocoDataSet.Images = cocoImages
+
+		for _, label := range labels {
+			cocoCategory := model.CocoCategory{
+				ID:            label.LabelID,
+				Name:          label.LabelName,
+				SuperCategory: label.LabelName,
+			}
+			cocoCategories = append(cocoCategories, cocoCategory)
+		}
+
+		cocoDataSet.Categories = cocoCategories
+
+		filename := task.TaskName + "json"
+		ctx.Header("Content-Disposition", "attachment; filename="+filename)
+		ctx.Header("Pragma", "no-cache")
+		ctx.Header("Expires", "0")
+
+		util.Success(ctx, cocoDataSet, "SUCCESS")
+		return
+	case 4:
+		log.Println(" case4:开始下载图片数据！")
+		images, err := adminImageRepositoryInstance.GetImageList(tempData.TaskID)
+		if err != nil {
+			ErrorString := ctx.Request.URL.String() + " Case1 : GetImageList  Error !!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		if len(images) == 0 {
+			ErrorString := ctx.Request.URL.String() + " Case1: 图片不存在!!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		labels, err := adminImageLabelRepository.GetLabelByImageID(images[0].ImageID)
+		if len(labels) == 0 {
+			ErrorString := ctx.Request.URL.String() + " Case1: 标签不存在 下载失败!!!"
+			log.Println(ErrorString)
+			util.Fail(ctx, gin.H{}, ErrorString)
+			return
+		}
+
+		cocoDataSet := model.CocoDataSet{}
+		cocoInfo := model.CocoInfo{
+			Year:        0,
+			DataCreated: "",
+		}
+		cocoDataSet.Info = cocoInfo
+
+		cocoAnnotations := []model.CocoAnnotation{}
+		cocoCategories := []model.CocoCategory{}
+		cocoImages := []model.CocoImage{}
+
+		for _, image := range images {
+			log.Println("case1: 进入images循环")
+			if image.UserComfirmID == 0 {
+				continue
+			}
+
+			datas, _ := adminImageRepositoryInstance.GetDatas(image.UserComfirmID, image.ImageID)
+			if len(datas) == 0 {
+				continue
+			}
+			cocoImage := model.CocoImage{
+				FileName: image.ImageName,
+				Height:   image.Height,
+				Width:    image.Width,
+				ID:       image.ImageID,
+			}
+			cocoImages = append(cocoImages, cocoImage)
+
+			for _, data := range datas {
+				log.Println("case1: 进入datas循环")
+				cocoAnnotation := model.CocoAnnotation{
+					ID:         data.DataID,
+					ImageID:    int64(data.ImageID),
+					CategoryID: int64(data.LabelID),
+				}
+
+				cocoAnnotations = append(cocoAnnotations, cocoAnnotation)
+			}
+		}
+
+		cocoDataSet.Annotations = cocoAnnotations
+		cocoDataSet.Images = cocoImages
+
+		for _, label := range labels {
+			cocoCategory := model.CocoCategory{
+				ID:            label.LabelID,
+				Name:          label.LabelName,
+				SuperCategory: label.LabelName,
+			}
+			cocoCategories = append(cocoCategories, cocoCategory)
+			cocoDataSet.Keypoints = append(cocoDataSet.Keypoints, label.LabelName)
+		}
+
+		cocoDataSet.Categories = cocoCategories
+
+		filename := task.TaskName + "json"
+		ctx.Header("Content-Disposition", "attachment; filename="+filename)
+		ctx.Header("Pragma", "no-cache")
+		ctx.Header("Expires", "0")
+
+		util.Success(ctx, cocoDataSet, "SUCCESS")
+		return
 	}
 
-	// ctx.Request.Response.Body =
-	// extraHeaders := map[string]string{
-	// 	"Content-Disposition": `attachment; filename="hello.txt"`,
-	// }
-	// ctx.DataFromReader(http.StatusOK, int64(len(content)), "application/text/plain", strings.NewReader(content), extraHeaders)
+	util.Fail(ctx, gin.H{}, "Fail")
 
-	//util.Success(ctx, `{"annotations":[{"area":310005.9876813942,"bbox":[616.2445414847161,1207.3362445414846,503.05676855895194,616.244541484716],"category_id":1,"desc":"","id":2,"image_id":57,"iscrowd":0,"segmentation":[1119.301310043668,591.0917030567686,1119.301310043668,1207.3362445414846,616.2445414847161,1207.3362445414846,616.2445414847161,591.0917030567686]},{"area":261923.4263267289,"bbox":[1651.7030567685588,1299.5633187772926,385.67685589519647,679.1266375545852],"category_id":1,"desc":"","id":3,"image_id":57,"iscrowd":0,"segmentation":[2037.3799126637552,620.4366812227074,2037.3799126637552,1299.5633187772926,1651.7030567685588,1299.5633187772926,1651.7030567685588,620.4366812227074]},{"area":435906.37859689957,"bbox":[2418.8646288209607,1639.1266375545852,490.4803493449781,888.7336244541485],"category_id":1,"desc":"","id":4,"image_id":57,"iscrowd":0,"segmentation":[2909.3449781659388,750.3930131004366,2909.3449781659388,1639.1266375545852,2418.8646288209607,1639.1266375545852,2418.8646288209607,750.3930131004366]},{"area":204587.5424428638,"bbox":[258.22088353413653,696.9678714859438,463.88353413654613,441.03212851405624],"category_id":1,"desc":"","id":8,"image_id":58,"iscrowd":0,"segmentation":[722.1044176706827,255.93574297188755,722.1044176706827,696.9678714859438,258.22088353413653,696.9678714859438,258.22088353413653,255.93574297188755]},{"area":146212.2868985984,"bbox":[479.8795180722891,909.4859437751004,365.6224899598394,399.8995983935743],"category_id":1,"desc":"","id":9,"image_id":58,"iscrowd":0,"segmentation":[845.5020080321285,509.5863453815261,845.5020080321285,909.4859437751004,479.8795180722891,909.4859437751004,479.8795180722891,509.5863453815261]},{"area":1488174.7311172404,"bbox":[1485.0923694779117,2039.116465863454,1361.9759036144583,1092.658634538153],"category_id":1,"desc":"","id":10,"image_id":59,"iscrowd":0,"segmentation":[2847.06827309237,946.4578313253012,2847.06827309237,2039.116465863454,1485.0923694779117,2039.116465863454,1485.0923694779117,946.4578313253012]},{"area":1022668.6542475121,"bbox":[2546.9718875502012,2708.562248995984,977.2369477911643,1046.4899598393574],"category_id":1,"desc":"","id":11,"image_id":59,"iscrowd":0,"segmentation":[3524.2088353413656,1662.0722891566268,3524.2088353413656,2708.562248995984,2546.9718875502012,2708.562248995984,2546.9718875502012,1662.0722891566268]},{"area":188498.2722646667,"bbox":[626.7829309499155,998.3148945446618,606.9300779334023,481.04983430369793],"category_id":1,"desc":"","id":12,"image_id":60,"iscrowd":0,"segmentation":[626.7829309499155,890.5422638835904,1145.7932312387595,998.3148945446618,1233.7130088833178,680.6692462804513,740.6295180722891,517.2650602409639]},{"area":125890.18329763191,"bbox":[174.42149435936562,425.4182789252821,472.21428960706305,266.5954547931768],"category_id":1,"desc":"","id":13,"image_id":60,"iscrowd":0,"segmentation":[646.6357839664287,158.8228241321053,646.6357839664287,425.4182789252821,174.42149435936562,425.4182789252821,174.42149435936562,158.8228241321053]}],"categories":[{"id":1,"name":"Test1","supercategory":"Test1"},{"id":2,"name":"Test2","supercategory":"Test2"}],"images":[{"file_name":"v2-f7e30ceb7b638a894db81d7d488c9e67_r.jpg","height":2160,"id":57,"width":3840},{"file_name":"v2-3b7392199923e40f65d7f2378c7b8a7d_r.jpg","height":1280,"id":58,"width":2276},{"file_name":"v2-4ddceb313556c6acdcb8ec52024a1be6_r.jpg","height":4240,"id":59,"width":7664},{"file_name":"04.jpg","height":2220,"id":60,"width":3903}],"info":{"date_created":"2020-06-22_07-52-08","year":2020}}`, "SUCCESS")
+	// content := "hello world, 我是一个文件，"
+	// strings.NewReader(content)
+
+	// os.Create("./hello.txt")
+	// err = ioutil.WriteFile("./hello.txt", []byte(content), os.ModePerm)
+	// ctx.Writer.WriteHeader(http.StatusOK)
+	// ctx.Header("Content-Disposition", "attachment; filename=hello.txt")
+	// ctx.Header("Content-Type", "application/text/plain")
+	// ctx.Header("Accept-Length", fmt.Sprintf("%d", len(content)))
+	// ctx.Header("Content-Type", "application/octet-stream")
+	// ctx.Header("Expires", "0")
+
+	// type Category struct {
+	// 	ID            int64  `json:"id"`
+	// 	Name          string `json:"name"`
+	// 	Supercategory string `json:"supercategory"`
+	// }
+
+	// type Infor struct {
+	// 	DateCreated string `json:"date_created"`
+	// 	Year        int64  `json:"year"`
+	// }
+
+	// type ResponseTemp struct {
+	// 	Annotations []int64    `json:"annotations"`
+	// 	Categories  []Category `json:"categories"`
+	// 	Images      []int64    `json:"images"`
+	// 	Info        Infor
+	// }
+
+	// categories := Category{
+	// 	ID:            1,
+	// 	Name:          "Test1",
+	// 	Supercategory: "Test1",
+	// }
+
+	// info := Infor{
+	// 	DateCreated: "2020-06-22_13-12-18",
+	// 	Year:        2020,
+	// }
+
+	// responseTemp := ResponseTemp{
+	// 	Annotations: []int64{},
+	// 	Images:      []int64{},
+	// 	Info:        info,
+	// }
+
+	// responseTemp.Categories = append(responseTemp.Categories, categories)
+	// util.Success(ctx, responseTemp, "SUCCESS")
+
 }

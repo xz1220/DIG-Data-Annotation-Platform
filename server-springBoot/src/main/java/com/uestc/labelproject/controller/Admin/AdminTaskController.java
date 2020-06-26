@@ -485,10 +485,11 @@ public class AdminTaskController {
                     cocoImages.add(cocoImage);
                     for(Data data: datas){
                         CocoAnnotation cocoAnnotation = new CocoAnnotation();
-                        //永远不会触发：iscrowd always equals 0 because no function calls for SetIsCrowd
+                        
                         if(data.getIscrowd() == 0) {
                             cocoAnnotation.setSegmentation(DataGeneratorUtil.genPolygonData(data));
                         }
+                        //永远不会触发：iscrowd always equals 0 because no function calls for SetIsCrowd
                         if(data.getIscrowd() == 1){
                             TempRleData tempRleData = adminImageService.getTempRleData(data.getDataId());
                             RleData rleData = DataGeneratorUtil.stringToRleData(tempRleData.getData());

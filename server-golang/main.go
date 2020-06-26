@@ -4,6 +4,7 @@ import (
 	"labelproject-back/common"
 	"labelproject-back/controller"
 	"labelproject-back/middleware"
+	"labelproject-back/ws"
 	"log"
 	"net/http"
 	"time"
@@ -62,6 +63,16 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 }
 
 func main() {
+	go ws.WebsocketManager.Start()
+	go ws.WebsocketManager.SendService()
+	go ws.WebsocketManager.SendService()
+	go ws.WebsocketManager.SendGroupService()
+	go ws.WebsocketManager.SendGroupService()
+	go ws.WebsocketManager.SendAllService()
+	go ws.WebsocketManager.SendAllService()
+	go ws.TestSendGroup()
+	go ws.TestSendAll()
+
 	time.Sleep(5000000000)
 	common.InitConfig("main")
 	common.InitDB()
@@ -79,6 +90,7 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r = CollectRoute(r, "http://localhost:9999")
+	r.GET("/sockjs-node", ws.WebsocketManager.WsClient)
 
 	// r = CollectRoute(r, "http://127.0.0.1:9999")
 

@@ -143,7 +143,7 @@ type CocoAnnotation struct {
 	CategoryID   int64     `json:"category_id"`
 	Area         float64   `json:"area"`
 	Iscrowd      int       `json:"iscrowd"`
-	Segmentation string    `json:"segmentation"`
+	Segmentation []float64 `json:"segmentation"`
 	BBox         []float64 `json:"bbox"`
 	Desc         string    `json:"desc"`
 }
@@ -159,4 +159,5 @@ type CocoDataSet struct {
 	Images      []CocoImage      `json:"images"`
 	Annotations []CocoAnnotation `json:"annotations"`
 	Categories  []CocoCategory   `json:"categories"`
+	Keypoints   []string         `json:"keypoints"`
 }

@@ -32,3 +32,11 @@ func CalculateArea(points []model.Points) float64 {
 	area = 0.5 * math.Abs(area+points[len(points)-1].X*points[0].Y-points[len(points)-1].Y*points[0].X)
 	return area
 }
+
+func GenPolygonData(points []model.Points) []float64 {
+	var seg []float64
+	for _, point := range points {
+		seg = append(seg, point.X, point.Y)
+	}
+	return seg
+}
