@@ -59,6 +59,7 @@
 /server-golang/.vscode/settings.json
 
 # front-end-golang
+/front-end-golang/
 /front-end-golang/.DS_Store
 /front-end-golang/node_modules/
 /front-end-golang/dist/
