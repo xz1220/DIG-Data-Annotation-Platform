@@ -24,48 +24,65 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 
 	r.Use(middleware.CORSMiddleware(foreIP)).POST("/api/login", controller.Login)
 	r.Use(middleware.CORSMiddleware(foreIP)).GET("/api/logout", controller.Logout)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).GET("/api/admin/getCount", controller.GetCount)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).GET("/api/admin/getUserList", controller.GetUserList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/editUser", controller.EditUser)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/addUser", controller.AddUser)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/deleteUser", controller.DeleteUser)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getPendingUserList", controller.GetPendingUserList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getVideoPendingUserList", controller.GetVideoPendingUserList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getListUser", controller.GetListUser)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getListReviewer", controller.GetListReviewer)
 
-	//TaskController
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getTaskList", controller.GetTaskList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/updateTaskType", controller.UpdateTaskType)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/updateTask", controller.UpdateTask)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/deleteTask", controller.DeleteTask)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/splitTask", controller.SplitTask)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).GET("/api/admin/getNewTaskList", controller.GetNewTaskList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/searchTask", controller.SearchTask)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).GET("/api/admin/taskList", controller.TaskList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/downloadDatas", controller.DownloadData)
+	admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	{
+		admin.GET("/getCount", controller.GetCount)
+		admin.GET("/getUserList", controller.GetUserList)
+		admin.POST("/editUser", controller.EditUser)
+		admin.POST("/addUser", controller.AddUser)
+		admin.POST("/deleteUser", controller.DeleteUser)
+		admin.POST("/getPendingUserList", controller.GetPendingUserList)
+		admin.POST("/getVideoPendingUserList", controller.GetVideoPendingUserList)
+		admin.POST("/getListUser", controller.GetListUser)
+		admin.POST("/getListReviewer", controller.GetListReviewer)
 
-	//AdminIMageController
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getImgList", controller.GetImageList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/getImg", controller.GetImg)
+		//TaskController
+		admin.POST("/getTaskList", controller.GetTaskList)
+		admin.POST("/updateTaskType", controller.UpdateTaskType)
+		admin.POST("/updateTask", controller.UpdateTask)
+		admin.POST("/deleteTask", controller.DeleteTask)
+		admin.POST("/splitTask", controller.SplitTask)
+		admin.GET("/getNewTaskList", controller.GetNewTaskList)
+		admin.POST("/searchTask", controller.SearchTask)
+		admin.GET("/taskList", controller.TaskList)
+		admin.POST("/downloadDatas", controller.DownloadData)
 
-	//admminImageLabelController
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).GET("/api/admin/getLabelList", controller.GetLabelList)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/addLabel", controller.AddLabel)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/editLabel", controller.EditLabel)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/deleteLabel", controller.DeleteLabel)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/saveLabel", controller.SaveLabel)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/deleteImageById", controller.DeleteImageByID)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/setFinalVersion", controller.SetFinalVersion)
-	// r.GET("/api/auth/info", middleware.AuthMiddleware(), controller.Info)
+		//AdminIMageController
+		admin.POST("/getImgList", controller.GetImageList)
+		admin.POST("/getImg", controller.GetImg)
+
+		//admminImageLabelController
+		admin.GET("/getLabelList", controller.GetLabelList)
+		admin.POST("/addLabel", controller.AddLabel)
+		admin.POST("/editLabel", controller.EditLabel)
+		admin.POST("/deleteLabel", controller.DeleteLabel)
+		admin.POST("/saveLabel", controller.SaveLabel)
+		admin.POST("/deleteImageById", controller.DeleteImageByID)
+		admin.POST("/setFinalVersion", controller.SetFinalVersion)
+		// r.GET("/api/auth/info", middleware.AuthMiddleware(), controller.Info)
+
+	}
 
 	//ReviewerController
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/taskList", controller.TaskListReviewer)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/getImgList", controller.GetImageListReviewer)
-	// r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/getImg", controller.GetImgReviewer)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/getPendingUserList", controller.GetPendingUserListReviewer)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/saveLabel", controller.SaveLabelReviewer)
-	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/setFinalVersion", controller.SetFinalVersionReviewer)
+
+	reviewer := r.Group("/api/reviewer").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	{
+		reviewer.POST("/taskList", controller.TaskListReviewer)
+		reviewer.POST("/getImgList", controller.GetImageListReviewer)
+		reviewer.POST("/getImg", controller.GetImgReviewer)
+		reviewer.POST("/getPendingUserList", controller.GetPendingUserListReviewer)
+		reviewer.POST("/saveLabel", controller.SaveLabelReviewer)
+		reviewer.POST("/setFinalVersion", controller.SetFinalVersionReviewer)
+	}
+
+	user := r.Group("/api/user").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	{
+		user.POST("/taskList", controller.TaskListUser)
+		user.POST("/getImgList", controller.GetImgListUser)
+		user.POST("/getImg", controller.GetImgUser)
+		user.POST("/saveLabel", controller.SaveLabelUser)
+	}
 
 	return r
 }
