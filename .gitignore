@@ -58,25 +58,24 @@
 /server-golang/.vscode/settings.json
 /server-golang/.vscode/settings.json
 
-# front-end-golang
-/front-end-golang/
-/front-end-golang/.DS_Store
-/front-end-golang/node_modules/
-/front-end-golang/dist/
-/front-end-golang/npm-debug.log*
-/front-end-golang/yarn-debug.log*
-/front-end-golang/yarn-error.log*
-/front-end-golang/test/unit/coverage/
+# front-end-gin
+/front-end-gin/.DS_Store
+/front-end-gin/node_modules/
+/front-end-gin/dist/
+/front-end-gin/npm-debug.log*
+/front-end-gin/yarn-debug.log*
+/front-end-gin/yarn-error.log*
+/front-end-gin/test/unit/coverage/
 
 # Editor directories and files
-/front-end-golang/.idea
-/front-end-golang/.vscode
-/front-end-golang/*.suo
-/front-end-golang/*.ntvs*
-/front-end-golang/*.njsproj
-/front-end-golang/*.sln
+/front-end-gin/.idea
+/front-end-gin/.vscode
+/front-end-gin/*.suo
+/front-end-gin/*.ntvs*
+/front-end-gin/*.njsproj
+/front-end-gin/*.sln
 
-/front-end-golang/*.old
+/front-end-gin/*.old
 
 
 _book/*

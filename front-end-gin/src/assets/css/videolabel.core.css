@@ -1,0 +1,166 @@
+.label-video * {
+  font-family: "Microsoft Yahei", "pingfang SC", sans-serif;
+}
+.label-video {
+  width: 100%;
+  height: calc(100% - 54px);
+  position: relative;
+  display: flex;
+}
+.label-right {
+  flex-basis: 400px;
+  background-color: #dbdbdb;
+}
+
+.bfplayer {
+  flex-grow: 1;
+  background-color: #000;
+  position: relative;
+}
+.label-sign {
+  position: fixed;
+  background-color: rgba(151, 151, 151, 0.6);
+  padding: 8px;
+  border-radius: 3px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 350px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  z-index: 999999;
+}
+.label-sign-question {
+  width: 100%;
+  margin-bottom: 5px;
+  color: #fff;
+  font-size: 14px;
+}
+.label-sign-answer {
+  flex-grow: 1;
+  height: 100%;
+}
+.label-sign-text {
+  width: 100%;
+  height: calc(100% - 22px);
+  background-color: #fff;
+  border: none;
+  resize: none;
+}
+.label-sign-btn {
+  border: 0;
+  color: #fff;
+  margin: 5px 10px 5px 0;
+  padding: 2px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 2px 15px;
+  float: right;
+}
+.label-sign-btn:first-child {
+  margin-right: 0;
+}
+.label-sign-cancel {
+  background-color: rgba(177, 177, 177, 0.85);
+}
+.label-sign-submit {
+  background-color: rgba(41, 128, 185, 0.85);
+}
+.label-sign-selector {
+  width: 100%;
+  height: 22px;
+}
+
+.label-list {
+  height: 100%;
+  overflow: auto;
+}
+.label-list-header {
+  font-size: 23px;
+  border-bottom: 1px #eee solid;
+  color: #4f4f4f;
+  padding: 5px 0;
+  font-weight: 600;
+}
+.label-list-header > span {
+  margin-left: 5px;
+}
+.label-list-header > span::before {
+  content: "- ";
+}
+.label-list-header > span:first-child {
+  margin-left: 0;
+}
+.label-list-header > span:first-child::before {
+  content: "";
+}
+.label-list ul {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+.label-video-list-item {
+  background-color: #eee;
+  color: #4f4f4f;
+  display: flex;
+  padding: 5px 15px;
+  margin: 5px;
+  border-radius: 3px;
+  flex-direction: column;
+}
+.label-list-color {
+  height: 25px;
+  background-color: #000;
+  position: relative;
+  border-radius: 30px;
+  top: 10px;
+  flex-basis: 25px;
+  flex-shrink: 0;
+}
+.label-list-title {
+  flex-grow: 1;
+  padding: 0 0 0 10px;
+}
+.label-list-title h3 {
+  margin: 0 0 5px 0;
+}
+.label-list-title p {
+  margin: 0;
+  font-size: 13px;
+}
+.label-list-options {
+  font-size: 25px;
+}
+.label-list-options > * {
+  float: right;
+  margin-right: 20px;
+}
+.label-list-options > *:first-child {
+  margin-right: 0;
+}
+.label-video-btn {
+  font-size: 25px;
+}
+@font-face {
+  font-family: "iconfont";
+  src: url("../fonts/videolabel.eot?t=1570175118696"); /* IE9 */
+  src: url("../fonts/videolabel.eot?t=1570175118696#iefix") format("embedded-opentype"), /* IE6-IE8 */ url("data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAMcAAsAAAAABxwAAALPAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqCAIIFATYCJAMMCwgABCAFhG0HOhtPBhEVlCdkPw7sGGcj25zsP2/j6GQUJd1zPMCv++/cuXfmz8NfqO0mMAFqZIJQoZJfSAso2XnzbE3H2EZFqC5Hz7ee5X/k/ztWGtZ5LMpMpRASIbm6tRdInAZ+D0gW/vS82i9a44FcK940fs94nk/cO/0tkAKZDyiXOSZ2n7oA44ACHWtQZAUSkDeMXfACjxNQ18tgYdqMMIJSYo8LCJs3DBWUhYgksXwpKBqWJuG8XJmdyJ7gXPT98M+QUJLJI3vqnLVBC5N+kp9lPF4dtyIgSJdzga0iYjASYVVjZokoMFZU16Tu8kISZEvFq4pIYuiKg/7xMkLBrm2C/jCb8TN4apG2hC/IQAQFapiJfZjRLZVLzWTfVzaazUP10FTXSB3zxtZ2zQ0d8o5rGqm+HO3w7siVOm0qbRcbc1JFWkfGRbYgjJkLlRJpatV06zi6vuGLnyBsPWiSi+bkkYLEmVFro1uVX2TUMVzAXHZ0f5Z+0zTucOdUeDrCQP/HTbtY7Rw/PlqNhEjkt2RFdDZZtYpA5Wwsggo8HdaA6kJ8EGdBZMte/vvfaL3I9sId979sJPDmqneHkepCMlxX3pk38KelA9uSIbetMWkST2Llo0Hy9zCrG34VO9DFx+m67oNTBGVBypBp0xNRqTclMQYj1zAMhZJ4IuoGSVc3dEXGQqphoBtA0MkHmQ6uI+rkS0mMH3I9/FHoFMaoWxS6btnQN2SrqYSCUYO8Qqaa2rh2XsX1G7THUlBeHrEPSH0Wh9ALyvkUa6QlZvQnGzEbMNRUkIDTsCwbaKnJUbHnmNvY903TmzzVVIOVqQgSGNKAdAUySqNmgu5sVfn8BrKOSgJ1kOqCB4j0sv5ByBMMoKSaehDpUV7pnVgRxgxgkEYFJMCFSifTAG3zoBxSmMdNSLViPupkhmq87XXV/+2BOnv/GLIQQ9K2y4laueNsE+aZqAcDAA==") format("woff2"), url("../fonts/videolabel.woff?t=1570175118696") format("woff"), url("../fonts/videolabel.ttf?t=1570175118696") format("truetype"), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */ url("../fonts/videolabel.svg?t=1570175118696#iconfont") format("svg"); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shanchu:before {
+  content: "\e601";
+}
+
+.icon-kejian:before {
+  content: "\e608";
+}

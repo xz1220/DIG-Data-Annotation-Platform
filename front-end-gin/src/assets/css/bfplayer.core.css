@@ -1,0 +1,734 @@
+.bfplayer {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background-color: #000;
+    font-family: "Microsoft Yahei", "pingfang SC", sans-serif;
+    transition: width 0.25s, height 0.25s;
+    -webkit-transition: width 0.25s, height 0.25s;
+}
+
+.bfplayer * {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.bfplayer-full {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+.bf-main,
+.bf-video {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.bf-video {
+    position: absolute;
+    top: 0;
+}
+.bf-controller {
+    z-index: 99;
+    height: 45px;
+    width: 100%;
+    bottom: 0;
+    color: #fff;
+    position: absolute;
+    padding: 0 20px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.21) 80%, rgba(255, 255, 255, 0));
+    animation: bf-gradual 0.25s;
+}
+
+.bf-controller-hide {
+    animation: bf-hide 0.25s;
+}
+
+.bf-top,
+.bf-bottom {
+    padding: 10px 0;
+    height: 35px;
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+
+.bf-top > * {
+    margin-right: 5px;
+}
+.bf-top .bf-btn,
+.bf-top .bf-selector,
+.bf-bottom .bf-btn,
+.bf-bottom .bf-selector {
+    margin-right: 20px;
+}
+.bf-btn-volume {
+    height: 35px;
+    margin-right: 12px !important;
+    width: 25px;
+}
+.bf-spacer {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.bf-pgb-player {
+    background-color: rgba(255, 255, 255, 0.16);
+    height: 4px;
+    width: calc(100% - 40px);
+    top: -4px;
+    position: absolute;
+    z-index: 12px;
+}
+
+.bf-pgb-player > * {
+    position: absolute;
+    top: 0;
+}
+
+.bf-pgb-player,
+.bf-pgb-player > * {
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+}
+
+.bf-pgb-player-enter {
+    height: 8px;
+    top: -6px;
+}
+
+.bf-pgb-player-notransition,
+.bf-pgb-player-notransition > * {
+    transition: none !important;
+    -webkit-transition: none !important;
+}
+
+.bf-pgb-buffer,
+.bf-pgb-played {
+    height: 100%;
+}
+
+.bf-pgb-buffer {
+    background-color: #d6d6d6;
+}
+
+.bf-pgb-played {
+    background-color: #fd4c5b;
+}
+
+.bf-pgb-point {
+    position: absolute;
+    display: inline-block;
+    top: -3px;
+    margin-left: -7px;
+    z-index: 999;
+}
+
+.bf-pgb-point > div {
+    width: 13px;
+    height: 13px;
+    background-color: #fd4c5b;
+    border-radius: 13px;
+    border: 3px #fff solid;
+}
+.bf-pgb-select {
+    height: 100%;
+    display: block;
+    background-color: rgba(64, 158, 255, 0.7);
+}
+.bf-btn,
+.bf-pgb-player,
+.bf-selector {
+    cursor: pointer;
+}
+
+.bf-btn > span {
+    font-size: 20px;
+}
+
+.bf-menu {
+    position: absolute;
+    z-index: 999999;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    animation: bf-gradual 0.2s;
+    color: #fff;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bf-menu > ul {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+}
+
+.bf-menu > ul > li {
+    padding: 10px 20px;
+    list-style: none;
+    transition: background-color 0.1s;
+}
+
+.bf-menu > ul > li > div:not(.bf-menu-selector) {
+    cursor: pointer;
+}
+
+.bf-menu > ul > li:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bf-menu > ul > li:first-child {
+    border-radius: 5px 5px 0 0;
+}
+
+.bf-menu > ul > li:last-child {
+    border-radius: 0 0 5px 5px;
+}
+
+.bf-menu-selector * {
+    vertical-align: middle;
+}
+
+.bf-menu-selector span {
+    padding-right: 10px;
+    border-right: 1px rgba(0, 0, 0, 0.2) solid;
+}
+
+.bf-menu-selector > ul {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.bf-menu-selector > ul > li {
+    float: left;
+    margin-right: 10px;
+    padding: 3px 5px;
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.1s;
+    border-radius: 5px;
+    font-size: 13px !important;
+}
+
+.bf-menu-selector > ul .active {
+    color: #fd4c5b;
+}
+
+.bf-menu-selector > ul > li:hover {
+    background-color: rgba(73, 73, 73, 0.5);
+}
+
+.bf-menu-selector:after {
+    display: table;
+    clear: both;
+    content: "";
+}
+
+.bf-volume {
+    width: 80px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.13);
+    top: 7px;
+    position: relative;
+    animation: bf-volume-value 0.25s;
+}
+
+.bf-volume > * {
+    transition: all 0.25s;
+}
+
+.bf-volume-noanimation > * {
+    transition: none !important;
+}
+
+.bf-volume-area {
+    width: 110px;
+    height: 35px;
+    padding: 7px 0 0 10px;
+    margin: -6px 10px 0 -20px;
+    animation: bf-volume 0.25s;
+}
+
+.bf-volume-hidden {
+    animation: bf-volume-hidden 0.25s;
+}
+
+.bf-volume-value {
+    height: 100%;
+    background-color: #fff;
+}
+
+.bf-volume-point {
+    background-color: #fff;
+    width: 12px;
+    height: 12px;
+    border-radius: 15px;
+    top: -8px;
+    position: relative;
+    margin-left: -2px;
+}
+
+.bf-tooltip,
+.bf-selector {
+    position: relative;
+}
+
+.bf-tip {
+    font-size: 13px;
+    position: absolute;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 999999;
+    padding: 2px 5px;
+    animation: bf-gradual 0.1s ease-out;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+}
+.bf-label-select-time,
+.bf-label-time,
+.bf-top > .bf-selector {
+    font-size: 15px;
+    color: rgb(255, 255, 255, 0.8);
+}
+.bf-label-select-time {
+    margin-left: 10px;
+}
+.bf-selector-panel {
+    font-size: 15px;
+    position: absolute;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 9999999;
+    list-style: none;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    animation: bf-gradual 0.1s;
+    color: #fff;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.bf-selector-panel > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bf-selector-panel li {
+    padding: 5px 15px;
+    transition: all 0.25s;
+}
+
+.bf-selector-panel > ul > li:first-child {
+    border-radius: 3px 3px 0 0;
+}
+
+.bf-selector-panel > ul > li:last-child {
+    border-radius: 0 0 3px 3px;
+}
+
+.bf-selector-panel li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bf-selector-panel .active {
+    color: #fd4c5b;
+}
+
+.bf-capture {
+    position: absolute;
+    right: 20px;
+    z-index: 99;
+    top: calc(50% - 50px);
+    color: #fff;
+}
+
+.bf-capture > div {
+    border-radius: 50px;
+    background-color: rgba(0, 0, 0, 0.24);
+    padding: 10px;
+    width: 40px;
+    height: 40px !important;
+    margin-bottom: 10px;
+}
+
+.bf-capture > div:last-child {
+    margin-bottom: 0;
+}
+
+.bf-capture > div > span {
+    font-size: 20px !important;
+    position: relative;
+    z-index: 99999999;
+}
+
+.bf-snackbar {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 14px;
+    position: absolute;
+    bottom: 85px;
+    z-index: 9999;
+    animation: bf-snackbar 0.25s;
+}
+
+.bf-snackbar-hide {
+    animation: bf-snackbar-hide 0.15s;
+}
+.bf-loading-panel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bf-loading {
+    z-index: 99999;
+    width: 220px;
+    height: 80px;
+    position: absolute;
+    padding: 30px 10px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.bf-ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: rgba(255, 0, 0, 0.25) 4px 3px 5px;
+    position: absolute;
+}
+
+.bf-ball-1 {
+    left: 20px;
+    background-color: #ff9204;
+    animation: ball-1 3s infinite linear;
+}
+
+.bf-ball-2 {
+    left: 60px;
+    background-color: #ff7120;
+    animation: ball-2 3s infinite ease-in-out;
+}
+
+.bf-ball-3 {
+    left: 100px;
+    background-color: #ff4e40;
+    animation: ball-3 3s infinite ease-in-out;
+}
+
+.bf-ball-4 {
+    left: 140px;
+    background-color: #ff2067;
+    animation: ball-4 3s infinite ease-in-out;
+}
+
+.bf-ball-5 {
+    left: 180px;
+    background-color: #ff0481;
+    animation: ball-5 3s infinite ease-in-out;
+}
+
+@keyframes ball-5 {
+    35% {
+        top: 30px;
+        left: 180px;
+        background-color: #ff0481;
+    }
+
+    42.5% {
+        top: 0px;
+    }
+
+    48% {
+        top: 30px;
+        left: 140px;
+        background-color: #ff2067;
+    }
+
+    52% {
+        top: 30px;
+        left: 140px;
+        background-color: #ff2067;
+    }
+
+    57.5% {
+        top: 60px;
+    }
+
+    65% {
+        top: 30px;
+        left: 180px;
+        background-color: #ff0481;
+    }
+}
+
+@keyframes ball-4 {
+    25% {
+        top: 30px;
+        left: 140px;
+        background-color: #ff2067;
+    }
+
+    32.5% {
+        top: 0px;
+    }
+
+    40% {
+        top: 30px;
+        left: 100px;
+        background-color: #ff4e40;
+    }
+
+    60% {
+        top: 30px;
+        left: 100px;
+        background-color: #ff4e40;
+    }
+
+    67.5% {
+        top: 60px;
+    }
+
+    75% {
+        top: 30px;
+        left: 140px;
+        background-color: #ff2067;
+    }
+}
+
+@keyframes ball-3 {
+    15% {
+        top: 30px;
+        left: 100px;
+        background-color: #ff4e40;
+    }
+
+    22.5% {
+        top: 0px;
+    }
+
+    30% {
+        top: 30px;
+        left: 60px;
+        background-color: #ff7120;
+    }
+
+    70% {
+        top: 30px;
+        left: 60px;
+        background-color: #ff7120;
+    }
+
+    77.5% {
+        top: 60px;
+    }
+
+    85% {
+        top: 30px;
+        left: 100px;
+        background-color: #ff4e40;
+    }
+}
+
+@keyframes ball-2 {
+    5% {
+        top: 30px;
+        left: 60px;
+        background-color: #ff7120;
+    }
+
+    12.5% {
+        top: 0px;
+    }
+
+    20% {
+        top: 30px;
+        left: 20px;
+        background-color: #ff9204;
+    }
+
+    80% {
+        top: 30px;
+        left: 20px;
+        background-color: #ff9204;
+    }
+
+    87.5% {
+        top: 60px;
+    }
+
+    95% {
+        top: 30px;
+        left: 60px;
+        background-color: #ff7120;
+    }
+}
+
+@keyframes ball-1 {
+    0% {
+        left: 20px;
+        background-color: #ff9204;
+    }
+
+    5% {
+        left: 20px;
+    }
+
+    45% {
+        background-color: #ff0481;
+        left: 180px;
+    }
+
+    55% {
+        background-color: #ff0481;
+        left: 180px;
+    }
+
+    95% {
+        left: 20px;
+    }
+
+    100% {
+        left: 20px;
+    }
+}
+@keyframes bf-left-to-right {
+    from {
+        left: -40px;
+        opacity: 0;
+    }
+    to {
+        left: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes bf-snackbar-hide {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes bf-snackbar {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bf-hide {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes bf-gradual {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bf-volume {
+    from {
+        opacity: 0;
+        width: 0;
+    }
+    to {
+        opacity: 1;
+        width: 110px;
+    }
+}
+@keyframes bf-volume-value {
+    from {
+        opacity: 0;
+        width: 0;
+    }
+    to {
+        opacity: 1;
+        width: 80px;
+    }
+}
+@keyframes bf-volume-hidden {
+    from {
+        opacity: 1;
+        width: 110px;
+    }
+    to {
+        opacity: 0;
+        width: 0;
+    }
+}
+@keyframes bf-volume-value-hidden {
+    from {
+        opacity: 1;
+        width: 80px;
+    }
+    to {
+        opacity: 0;
+        width: 0;
+    }
+}
+
+@keyframes loading {
+    0% {
+        width: 80%;
+        height: 80%;
+    }
+    50% {
+        width: 100%;
+        height: 100%;
+    }
+    100% {
+        width: 80%;
+        height: 80%;
+    }
+}
+@keyframes loading-center {
+    0% {
+        width: 40%;
+        height: 40%;
+    }
+    50% {
+        width: 80%;
+        height: 80%;
+    }
+    100% {
+        width: 40%;
+        height: 40%;
+    }
+}

@@ -1,0 +1,36 @@
+.dashboard {
+  display: flex;
+  flex-wrap: wrap;
+}
+.dashboard-panel {
+  width: 200px;
+  height: 180px;
+  text-align: center;
+  margin: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+.panel-number {
+  padding: 15px 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.11);
+  background-color: #f9f9f9;
+  color: #696969;
+}
+.panel-header {
+  font-size: 20px;
+}
+.panel-content {
+  font-size: 50px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 80px;
+}
+.guide > p {
+  line-height: 2;
+}
+.icon {
+  background-color: #eeee;
+  border-radius: 3px;
+  padding: 5px;
+}
