@@ -42,7 +42,7 @@
 
 ### 🚀 Quick Start
 
-####  Annotation Platform ： SpringBoot + Vue.js
+####  Annotation Platform
 
 **Preparation**
 
@@ -55,13 +55,13 @@ git clone https://github.com/xz1220/labelproject-foreground-spring.git
 cd src/model/ && vim Service.js // 修改HOST 对应后端IP地址 
 cnpm install && cnpm run build 
 docker build -t <image_name> .
-vim compose/labelproject-java.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像，按需修改容器volume
+vim compose/labelproject-<java/golang>.yml // 修改compose配置文件，修改 web-fore.image 为新创建镜像，按需修改容器volume
 ```
 
 **Installation By docker-compose**
 
 ```shell
-docker-compose -f compose/labelproject-java.yml up // 后端端口绑定8887 前端端口绑定8889 
+docker-compose -f compose/labelproject-<java/golang>.yml up // 后端端口绑定8887 前端端口绑定8889 
 ```
 ##### Features
 
@@ -88,7 +88,6 @@ docker-compose -f monitor.yml up
 
 #### 🖼 Annotation Platform
 
-- 前端入口  : http://localhost:8889
 - 初始化用户名：admin 密码：admin
 
 ### 🖥 Monitor
