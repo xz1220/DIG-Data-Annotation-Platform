@@ -57,13 +57,13 @@ git clone https://github.com/xz1220/labelproject-foreground-spring.git
 cd src/model/ && vim Service.js // modify HOST to the IP address of back-end 
 cnpm install && cnpm run build 
 docker build -t <image_name> .
-vim compose/labelproject-java.yml // modify web-fore.image to the new fore-end image name
+vim compose/labelproject-<java/golang>.yml // modify web-fore.image to the new fore-end image name
 ```
 
 **Installation By docker-compose**
 
 ```shell
-docker-compose -f compose/labelproject-java.yml up // back-end: bind port to 8887 fore-end: bind port to 8889 
+docker-compose -f compose/labelproject-<java/golang>.yml up // back-end: bind port to 8887 fore-end: bind port to 8889 
 ```
 
 ##### Features
@@ -91,7 +91,6 @@ docker-compose -f monitor.yml up
 
 #### 🖼 Annotation Platform （installed locally)
 
-- Fore-end URL  : http://localhost:8889
 - Initialized user name ：admin  password ：admin
 
 ### 🖥 Monitor (installed locally)
