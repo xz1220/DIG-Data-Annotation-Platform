@@ -34,23 +34,23 @@
 /server-springBoot/src/main/docker/*.jar
 
 # front-end
-/front-end/.DS_Store
-/front-end/node_modules/
-/front-end/dist/
-/front-end/npm-debug.log*
-/front-end/yarn-debug.log*
-/front-end/yarn-error.log*
-/front-end/test/unit/coverage/
+/front-end-spring/.DS_Store
+/front-end-spring/node_modules/
+/front-end-spring/dist/
+/front-end-spring/npm-debug.log*
+/front-end-spring/yarn-debug.log*
+/front-end-spring/yarn-error.log*
+/front-end-spring/test/unit/coverage/
 
 # Editor directories and files
-/front-end/.idea
-/front-end/.vscode
-/front-end/*.suo
-/front-end/*.ntvs*
-/front-end/*.njsproj
-/front-end/*.sln
+/front-end-spring/.idea
+/front-end-spring/.vscode
+/front-end-spring/*.suo
+/front-end-spring/*.ntvs*
+/front-end-spring/*.njsproj
+/front-end-spring/*.sln
 
-/front-end/*.old
+/front-end-spring/*.old
 
 # Server-Golang
 /server-golang/.vscode/
