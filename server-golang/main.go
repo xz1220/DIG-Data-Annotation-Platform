@@ -59,6 +59,14 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/admin/setFinalVersion", controller.SetFinalVersion)
 	// r.GET("/api/auth/info", middleware.AuthMiddleware(), controller.Info)
 
+	//ReviewerController
+	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/taskList", controller.TaskListReviewer)
+	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/getImgList", controller.GetImageListReviewer)
+	// r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/getImg", controller.GetImgReviewer)
+	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/getPendingUserList", controller.GetPendingUserListReviewer)
+	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/saveLabel", controller.SaveLabelReviewer)
+	r.Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth()).POST("/api/reviewer/setFinalVersion", controller.SetFinalVersionReviewer)
+
 	return r
 }
 

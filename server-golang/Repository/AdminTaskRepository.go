@@ -276,7 +276,7 @@ func (r *adminTaskRepository) GetTaskListByID(taskIDs []int64) ([]*model.Task, e
 func (r *adminTaskRepository) GetTaskIDByReviewerID(reviewerID int64) ([]int64, error) {
 	var taskReviewerInfos []*model.TaskReviewerInfo
 	var taskIDs []int64
-	err := r.db.Where("reviewer_id = ?", reviewerID).First(&taskReviewerInfos).Error
+	err := r.db.Where("reviewer_id = ?", reviewerID).Find(&taskReviewerInfos).Error
 	if err != nil {
 		return nil, err
 	}
