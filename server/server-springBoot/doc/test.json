@@ -1,0 +1,124 @@
+{
+  "code": 200,
+  "message": "SUCCESS",
+  "data": {
+    "image": {
+      "imageId": 57,
+      "imageName": "v2-f7e30ceb7b638a894db81d7d488c9e67_r.jpg",
+      "imageThumb": "thumb_v2-f7e30ceb7b638a894db81d7d488c9e67_r.jpg",
+      "taskId": 10004,
+      "userConfirmId": null,
+      "width": 3840,
+      "height": 2160
+    },
+    "datas": [
+      {
+        "dataId": 2,
+        "imageId": 57,
+        "labelId": 1,
+        "labelType": 1,
+        "userId": 2,
+        "dataDesc": "",
+        "point": [
+          {
+            "x": 1119.301310043668,
+            "y": 591.0917030567686,
+            "order": 4
+          },
+          {
+            "x": 1119.301310043668,
+            "y": 1207.3362445414846,
+            "order": 3
+          },
+          {
+            "x": 616.2445414847161,
+            "y": 1207.3362445414846,
+            "order": 2
+          },
+          {
+            "x": 616.2445414847161,
+            "y": 591.0917030567686,
+            "order": 1
+          }
+        ],
+        "iscrowd": 0
+      },
+      {
+        "dataId": 3,
+        "imageId": 57,
+        "labelId": 1,
+        "labelType": 1,
+        "userId": 2,
+        "dataDesc": "",
+        "point": [
+          {
+            "x": 2037.3799126637552,
+            "y": 620.4366812227074,
+            "order": 4
+          },
+          {
+            "x": 2037.3799126637552,
+            "y": 1299.5633187772926,
+            "order": 3
+          },
+          {
+            "x": 1651.7030567685588,
+            "y": 1299.5633187772926,
+            "order": 2
+          },
+          {
+            "x": 1651.7030567685588,
+            "y": 620.4366812227074,
+            "order": 1
+          }
+        ],
+        "iscrowd": 0
+      },
+      {
+        "dataId": 4,
+        "imageId": 57,
+        "labelId": 1,
+        "labelType": 1,
+        "userId": 2,
+        "dataDesc": "",
+        "point": [
+          {
+            "x": 2909.3449781659388,
+            "y": 750.3930131004366,
+            "order": 4
+          },
+          {
+            "x": 2909.3449781659388,
+            "y": 1639.1266375545852,
+            "order": 3
+          },
+          {
+            "x": 2418.8646288209607,
+            "y": 1639.1266375545852,
+            "order": 2
+          },
+          {
+            "x": 2418.8646288209607,
+            "y": 750.3930131004366,
+            "order": 1
+          }
+        ],
+        "iscrowd": 0
+      }
+    ],
+    "labels": [
+      {
+        "labelId": 1,
+        "labelName": "Test1",
+        "labelType": 0,
+        "labelColor": "#3498db"
+      },
+      {
+        "labelId": 2,
+        "labelName": "Test2",
+        "labelType": 0,
+        "labelColor": "#3498db"
+      }
+    ]
+  }
+}

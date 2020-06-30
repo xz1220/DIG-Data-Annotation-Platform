@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uestc.labelproject.dao.AdminUserMapper">
+
+    <!--<select id="getList" resultType="com.uestc.cm.model.facility.Facility">
+        select * from facility;
+    </select>
+    -->
+    <resultMap id="BaseResultMap" type="com.uestc.labelproject.entity.User">
+        <id column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="authorities" jdbcType="VARCHAR" property="authorities"/>
+    </resultMap>
+    <sql id="insertKey">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                `password`,
+            </if>
+            <if test="authorities != null">
+                authorities,
+            </if>
+        </trim>
+    </sql>
+    <sql id="insertValue">
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="username!=null">
+                #{username},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="authorities != null">
+                #{authorities},
+            </if>
+        </trim>
+    </sql>
+    <select id="getUserList" resultMap="BaseResultMap">
+        select * from user
+    </select>
+    <select id="findByUsername" parameterType="String" resultMap="BaseResultMap">
+        select * from user where username = #{username}
+    </select>
+    <insert id="addUser" parameterType="com.uestc.labelproject.entity.User">
+        insert into user <include refid="insertKey"/> <include refid="insertValue"/>
+    </insert>
+    <update id="editUser" parameterType="com.uestc.labelproject.entity.User">
+        update user
+        <set>
+            <trim>
+                <if test="username != null">
+                    username = #{username},
+                </if>
+                <if test="password != null">
+                    `password` = #{password},
+                </if>
+                <if test="authorities != null">
+                    authorities = #{authorities},
+                </if>
+            </trim>
+        </set>
+            where user_id = #{userId}
+    </update>
+    <select id="getPendingUserList" parameterType="Long" resultMap="BaseResultMap">
+        select * from user u
+        where u.user_id in
+              (select t.user_id from taskuserinfo t
+               where t.task_id =
+                     (select i.task_id from image i
+                      where i.image_id = #{imageId}))
+    </select>
+
+    <select id="getVideoPendingUserList" parameterType="Long" resultMap="BaseResultMap">
+        select * from user u
+        where u.user_id in
+              (select t.user_id from taskuserinfo t
+               where t.task_id =
+                     (select i.task_id from video i
+                      where i.video_id = #{videoId}))
+    </select>
+    <delete id="deleteUser" parameterType="Long">
+        delete from user where user_id = #{userId}
+    </delete>
+
+    <select id="getListUser" resultMap="BaseResultMap">
+        select * from user where authorities = 'ROLE_USER'
+    </select>
+    <select id="getListReviewer" resultMap="BaseResultMap">
+        select * from user where authorities = 'ROLE_REVIEWER'
+    </select>
+    <select id="getUserById" resultMap="BaseResultMap">
+        select * from user where user_id = #{userId}
+    </select>
+    <select id="getTaskCount" resultType="int">
+        select count(*) from task
+    </select>
+
+    <select id="getUserCount" resultType="int">
+        select count(*) from user where authorities = 'ROLE_USER'
+    </select>
+
+    <select id="getReviewerCount" resultType="int">
+        select count(*) from user where authorities = 'ROLE_REVIEWER'
+    </select>
+</mapper>

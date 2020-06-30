@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Surefire suite" duration-ms="6536" started-at="2020-05-24T00:14:02 CST" finished-at="2020-05-24T00:14:08 CST">
+    <groups>
+    </groups>
+    <test name="Surefire test" duration-ms="6536" started-at="2020-05-24T00:14:02 CST" finished-at="2020-05-24T00:14:08 CST">
+      <class name="com.uestc.labelproject.LabelprojectApplicationTests">
+        <test-method status="PASS" signature="contextLoads()" name="contextLoads" duration-ms="6220" started-at="2020-05-24T00:14:02 CST" finished-at="2020-05-24T00:14:08 CST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- contextLoads -->
+      </class> <!-- com.uestc.labelproject.LabelprojectApplicationTests -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>

@@ -1,0 +1,13 @@
+* 说明
+  提供一些工具类
+** jwt.go
+- ReleaseToken : 发放token
+- ParseToken : 
+
+** database.go
+- InitDB ： 初始化mysql && redis 的连接
+- GetDB : 获得mysql DB.conn
+- GetCache : 获得redis DB.Conn
+
+** config.go
+- InitConfig : 解析配置文件

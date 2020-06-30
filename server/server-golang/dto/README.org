@@ -1,0 +1,4 @@
+* DTO - data to object
+  将model层的数据进行转换，用于返回数据
+** user_dto.go
+- UserDto: 返回三个字段

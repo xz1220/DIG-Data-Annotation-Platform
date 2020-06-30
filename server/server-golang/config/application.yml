@@ -1,0 +1,13 @@
+server:
+  port: 5556
+datasource:
+  dirverName: mysql
+  host: 172.24.0.2
+  port: 3306
+  database: labelproject
+  username: root
+  password: 123456
+  charset: utf8
+redis:
+  host: 172.24.0.3
+  port: 6379
