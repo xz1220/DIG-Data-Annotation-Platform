@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	repository "labelproject-back/Repository"
 	"labelproject-back/common"
-	"labelproject-back/dto"
 	"labelproject-back/middleware"
 	"labelproject-back/model"
 	"labelproject-back/util"
@@ -56,7 +55,8 @@ func Login(ctx *gin.Context) {
 	log.Println(ctx.Request.RemoteAddr)
 	err = redisUtilInstance.AddTokenTORedis(token, requestMap.Username, ctx.Request.RemoteAddr)
 	//返回结果
-	util.Success(ctx, gin.H{"user": dto.ToUserDto(user), "token": token}, "SUCCESS")
+
+	util.Success(ctx, gin.H{"user": model.ToUserDto(user), "token": token}, "SUCCESS")
 	// util.Success(ctx, gin.H{"token": token}, "SUCCESS")
 
 	log.Println("登录成功！")

@@ -29,10 +29,10 @@ func (VideoData) TableName() string {
 }
 
 type VideoLabel struct {
-	LabelID  int64  `gorm:"primary_key;AUTO_INCREMENT;unique_index;column:label_id" form:"label_id"`
-	Question string `gorm:"type:varchar(1024);column:question" form:"question"`
-	Type     int    `gorm:"column:type" form:"type"`
-	selector string `gorm:"type:varchar(1024);column:selector" form:"selector"`
+	LabelID  int64  `gorm:"primary_key;AUTO_INCREMENT;unique_index;column:label_id" form:"label_id" json:"labelId"`
+	Question string `gorm:"type:varchar(1024);column:question" form:"question" json:"question"`
+	Type     int    `gorm:"column:type" form:"type" json:"type"`
+	Selector string `gorm:"type:varchar(1024);column:selector" form:"selector" json:"selector"`
 }
 
 func (VideoLabel) TableName() string {

@@ -27,3 +27,17 @@ type UserInfo struct {
 	UserID   int64
 	Labeled  int64
 }
+
+type UserDto struct {
+	Username    string `json:"username"`
+	UserId      int64  `json:"userId"`
+	Authorities string `json:"authorities"`
+}
+
+func ToUserDto(user User) UserDto {
+	return UserDto{
+		Username:    user.Username,
+		UserId:      user.UserID,
+		Authorities: user.Authorities,
+	}
+}

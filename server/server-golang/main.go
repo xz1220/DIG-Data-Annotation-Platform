@@ -62,6 +62,8 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 		admin.POST("/setFinalVersion", controller.SetFinalVersion)
 		// r.GET("/api/auth/info", middleware.AuthMiddleware(), controller.Info)
 
+		admin.GET("/getVideoLabelList", controller.GetVideoLabelList)
+		admin.POST("/addVideoLabel", controller.AddVideoLabel)
 	}
 
 	//ReviewerController
