@@ -73,3 +73,67 @@ func AddVideoLabel(ctx *gin.Context) {
 	log.Println("添加模板成功")
 	util.Success(ctx, gin.H{}, "SUCCESS")
 }
+
+func EditVideoLabel(ctx *gin.Context) {
+	type VideoLabel struct {
+		LabelID  int64    `gorm:"primary_key;AUTO_INCREMENT;unique_index;column:label_id" form:"label_id" json:"labelId"`
+		Question string   `gorm:"type:varchar(1024);column:question" form:"question" json:"question"`
+		Type     int      `gorm:"column:type" form:"type" json:"type"`
+		Selector []string `gorm:"type:varchar(1024);column:selector" form:"selector" json:"selector"`
+	}
+
+	var tempData VideoLabel
+	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
+
+	tempVideoLabel := model.VideoLabel{
+		Question: tempData.Question,
+		Type:     tempData.Type,
+		Selector: tempData.Selector[0],
+	}
+
+	db := common.GetDB()
+	adminVideoLabelRepositoryInstance := repository.AdminVideoLabelRepositoryInstance(db)
+	err := adminVideoLabelRepositoryInstance.EditVideoLabel(tempVideoLabel)
+	if err != nil {
+		ErrorString := ctx.Request.URL.String() + " 修改失败，请重试!!!"
+		log.Println(ErrorString)
+		util.Fail(ctx, gin.H{}, ErrorString)
+		return
+	}
+	log.Println("修改模板成功")
+	util.Success(ctx, gin.H{}, "SUCCESS")
+
+}
+
+func DeleteVideoLabel(ctx *gin.Context) {
+	var labelID int64 `json:"labelId"`
+	json.NewDecoder(ctx.Request.Body).Decode(&labelID)
+
+	if labelID == 0 {
+		ErrorString := ctx.Request.URL.String() + " 参数错误，修改失败!!!"
+		log.Println(ErrorString)
+		util.Fail(ctx, gin.H{}, ErrorString)
+		return
+	}
+
+	db := common.GetDB()
+	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
+	taskIDs, err := adminTaskRepositoryInstance.GetTaskIDsByLabelID(labelID,2)
+	if len(taskIDs) >0{
+		ErrorString := ctx.Request.URL.String() + " 该标签已被使用，删除失败!!!"
+		log.Println(ErrorString)
+		util.Fail(ctx, gin.H{}, ErrorString)
+		return
+	}
+
+	adminVideoLabelRepositoryInstance :=repository.AdminVideoLabelRepositoryInstance(db)
+	err:=adminVideoLabelRepositoryInstance.DeleteVideoLabel(model.VideoLabel{LabelID: labelID})
+	if err != nil {
+		ErrorString := ctx.Request.URL.String() + " 删除失败，请重试!!!"
+		log.Println(ErrorString)
+		util.Fail(ctx, gin.H{}, ErrorString)
+		return
+	}
+	log.Println("删除模板成功")
+	util.Success(ctx, gin.H{}, "SUCCESS")
+}

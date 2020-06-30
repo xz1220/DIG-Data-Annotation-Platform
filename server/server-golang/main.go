@@ -64,6 +64,8 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 
 		admin.GET("/getVideoLabelList", controller.GetVideoLabelList)
 		admin.POST("/addVideoLabel", controller.AddVideoLabel)
+		admin.POST("/editVideoLabel", controller.EditVideoLabel)
+		admin.POST("deleteVideoLabel", controller.DeleteVideoLabel)
 	}
 
 	//ReviewerController
