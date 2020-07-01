@@ -86,6 +86,7 @@ func EditVideoLabel(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	tempVideoLabel := model.VideoLabel{
+		LabelID:  tempData.LabelID,
 		Question: tempData.Question,
 		Type:     tempData.Type,
 		Selector: tempData.Selector[0],
@@ -123,7 +124,7 @@ func DeleteVideoLabel(ctx *gin.Context) {
 
 	db := common.GetDB()
 	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
-	taskIDs, err := adminTaskRepositoryInstance.GetTaskIDsByLabelID(tempData.LabelID, 2)
+	taskIDs, err := adminTaskRepositoryInstance.GetTaskIDsByLabelID(tempData.LabelID, 5)
 	if len(taskIDs) > 0 {
 		ErrorString := ctx.Request.URL.String() + " 该标签已被使用，删除失败!!!"
 		log.Println(ErrorString)
@@ -132,7 +133,7 @@ func DeleteVideoLabel(ctx *gin.Context) {
 	}
 
 	adminVideoLabelRepositoryInstance := repository.AdminVideoLabelRepositoryInstance(db)
-	err := adminVideoLabelRepositoryInstance.DeleteVideoLabel(model.VideoLabel{LabelID: tempData.LabelID})
+	err = adminVideoLabelRepositoryInstance.DeleteVideoLabel(model.VideoLabel{LabelID: tempData.LabelID})
 	if err != nil {
 		ErrorString := ctx.Request.URL.String() + " 删除失败，请重试!!!"
 		log.Println(ErrorString)

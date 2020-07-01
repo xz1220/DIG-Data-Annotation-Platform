@@ -65,7 +65,7 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 		admin.GET("/getVideoLabelList", controller.GetVideoLabelList)
 		admin.POST("/addVideoLabel", controller.AddVideoLabel)
 		admin.POST("/editVideoLabel", controller.EditVideoLabel)
-		admin.POST("deleteVideoLabel", controller.DeleteVideoLabel)
+		admin.POST("/deleteVideoLabel", controller.DeleteVideoLabel)
 	}
 
 	//ReviewerController
@@ -102,7 +102,7 @@ func main() {
 	go ws.TestSendGroup()
 	go ws.TestSendAll()
 
-	time.Sleep(5000000000)
+	time.Sleep(10000000000)
 	common.InitConfig("main")
 	common.InitDB()
 	db := common.GetDB()
