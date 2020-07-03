@@ -80,7 +80,7 @@ func GetTaskList(ctx *gin.Context) {
 	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
 	tasks, err := adminTaskRepositoryInstance.GetTaskList()
 	if err != nil {
-		log.Println("Get Task List Error!!!")
+		util.ManagerInstance.SendError(ctx.Request.URL.String(), "Get Task List Error!!!")
 		util.Fail(ctx, gin.H{}, "Get Task List Error!!!")
 		return
 	}
@@ -89,7 +89,7 @@ func GetTaskList(ctx *gin.Context) {
 	for _, task := range tasks {
 		userInfos, err := adminTaskRepositoryInstance.GetUserInfo(task.TaskID)
 		if err != nil {
-			log.Println("Get UserInfo List Error!!!")
+			util.ManagerInstance.SendError(ctx.Request.URL.String(), "Get UserInfo List Error!!!")
 			util.Fail(ctx, gin.H{}, "Get UserInfo List Error!!!")
 			return
 		}
@@ -101,7 +101,7 @@ func GetTaskList(ctx *gin.Context) {
 			userIds = append(userIds, userInfo.UserID)
 			user, err := adminUserReposityInstance.GetUserByID(userInfo.UserID)
 			if err != nil {
-				log.Println("Get User Error!!!")
+				util.ManagerInstance.SendError(ctx.Request.URL.String(), "Get User Error!!!")
 				util.Fail(ctx, gin.H{}, "Get User Error!!!")
 				return
 			}
@@ -110,7 +110,7 @@ func GetTaskList(ctx *gin.Context) {
 
 		reviewerInfos, err := adminTaskRepositoryInstance.GetReviewerInfo(task.TaskID)
 		if err != nil {
-			log.Println("Get ReviewerInfo List Error!!!")
+			util.ManagerInstance.SendError(ctx.Request.URL.String(), "Get ReviewerInfo List Error!!!")
 			util.Fail(ctx, gin.H{}, "Get ReviewerInfo List Error!!!")
 			return
 		}
@@ -122,7 +122,7 @@ func GetTaskList(ctx *gin.Context) {
 			reviewerIds = append(reviewerIds, userInfo.ReviewerID)
 			user, err := adminUserReposityInstance.GetUserByID(userInfo.ReviewerID)
 			if err != nil {
-				log.Println("Get Reviewers Error!!!")
+				util.ManagerInstance.SendError(ctx.Request.URL.String(), "Get Reviewers Error!!!")
 				util.Fail(ctx, gin.H{}, "Get Reviewers Error!!!")
 				return
 			}
@@ -131,7 +131,7 @@ func GetTaskList(ctx *gin.Context) {
 
 		labelinfos, err := adminTaskRepositoryInstance.GetLabelInfo(task.TaskID)
 		if err != nil {
-			log.Println("Get LabelInfo List Error!!!")
+			util.ManagerInstance.SendError(ctx.Request.URL.String(), "Get LabelInfo List Error!!!")
 			util.Fail(ctx, gin.H{}, "Get LabelInfo List Error!!!")
 			return
 		}
@@ -196,7 +196,8 @@ func UpdateTaskType(ctx *gin.Context) {
 
 	err := adminTaskRepositoryInstance.UpdateTaskType(tempData.TaskID, tempData.TaskType)
 	if err != nil {
-		log.Println("Update Task Error!!!")
+		log.Println()
+		util.ManagerInstance.SendError(ctx.Request.URL.String(), "Update Task Error!!!")
 		util.Fail(ctx, gin.H{}, "Update Task Error!!!")
 		return
 	}
@@ -219,9 +220,8 @@ func UpdateTask(ctx *gin.Context) {
 	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
 	oldTask, err := adminTaskRepositoryInstance.GetTaskByID(taskRequest.TaskID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "Find Task By ID Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.SendError(ctx.Request.URL.String(), "Find Task By ID Error!!!")
+		util.Fail(ctx, gin.H{}, "Find Task By ID Error!!!")
 		return
 	}
 

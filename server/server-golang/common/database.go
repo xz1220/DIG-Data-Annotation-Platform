@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
@@ -25,10 +26,13 @@ func InitDB() {
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
+
+RedisConnection:
 	pong, err := client.Ping().Result()
 	log.Println(pong, err)
 	if err != nil {
-		panic("failed to connect redis,err:" + err.Error())
+		time.Sleep(10000000000)
+		goto RedisConnection
 	} else {
 		log.Println("Redis Connect success!")
 	}
@@ -49,9 +53,15 @@ func InitDB() {
 		database,
 		charset)
 	fmt.Println(args)
+
+MysqlConnection:
 	db, err := gorm.Open(dirverName, args)
 	if err != nil {
-		panic("failed to connect database,err:" + err.Error())
+		// panic("failed to connect database,err:" + err.Error())
+		time.Sleep(10000000000)
+		goto MysqlConnection
+	} else {
+		log.Println("Mysql Connected success!")
 	}
 
 	// db.AutoMigrate(&model.User{})

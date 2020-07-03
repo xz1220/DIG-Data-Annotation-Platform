@@ -4,10 +4,10 @@ import (
 	"labelproject-back/common"
 	"labelproject-back/controller"
 	"labelproject-back/middleware"
+	"labelproject-back/util"
 	"labelproject-back/ws"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -92,17 +92,20 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 }
 
 func main() {
-	go ws.WebsocketManager.Start()
-	go ws.WebsocketManager.SendService()
-	go ws.WebsocketManager.SendService()
-	go ws.WebsocketManager.SendGroupService()
-	go ws.WebsocketManager.SendGroupService()
-	go ws.WebsocketManager.SendAllService()
-	go ws.WebsocketManager.SendAllService()
-	go ws.TestSendGroup()
-	go ws.TestSendAll()
+	// go ws.WebsocketManager.Start()
+	// go ws.WebsocketManager.SendService()
+	// go ws.WebsocketManager.SendService()
+	// go ws.WebsocketManager.SendGroupService()
+	// go ws.WebsocketManager.SendGroupService()
+	// go ws.WebsocketManager.SendAllService()
+	// go ws.WebsocketManager.SendAllService()
+	// go ws.TestSendGroup()
+	// go ws.TestSendAll()
 
-	time.Sleep(10000000000)
+	// time.Sleep(10000000000)
+
+	go util.ManagerInstance.Start()
+
 	common.InitConfig("main")
 	common.InitDB()
 	db := common.GetDB()
