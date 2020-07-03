@@ -29,9 +29,7 @@ func TaskListUser(ctx *gin.Context) {
 
 	UserID, err := util.String2Int64(tempData.UserID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "TaskID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "TaskID string2int error!!!")
 		return
 	}
 
@@ -39,9 +37,7 @@ func TaskListUser(ctx *gin.Context) {
 	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
 	tasks, err := adminTaskRepositoryInstance.TaskList()
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "TaskList error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "TaskList error!!!")
 		return
 	}
 
@@ -49,25 +45,19 @@ func TaskListUser(ctx *gin.Context) {
 	for _, task := range tasks {
 		userIDs, err := adminTaskRepositoryInstance.GetUserIDsFromUserInfo(task.TaskID)
 		if err != nil {
-			ErrorString := ctx.Request.URL.String() + "SearchTask error!!!"
-			log.Println(ErrorString)
-			util.Fail(ctx, gin.H{}, ErrorString)
+			util.ManagerInstance.FailWithoutData(ctx, "SearchTask error!!!")
 			return
 		}
 
 		reviewersIDs, err := adminTaskRepositoryInstance.GetReviewerIDsFromReviewerInfo(task.TaskID)
 		if err != nil {
-			ErrorString := ctx.Request.URL.String() + "SearchTask error!!!"
-			log.Println(ErrorString)
-			util.Fail(ctx, gin.H{}, ErrorString)
+			util.ManagerInstance.FailWithoutData(ctx, "GetReviewerIDsFromReviewerInfo Error")
 			return
 		}
 
 		labelIDs, err := adminTaskRepositoryInstance.GetLabelIDsFromLabelInfo(task.TaskID)
 		if err != nil {
-			ErrorString := ctx.Request.URL.String() + "SearchTask error!!!"
-			log.Println(ErrorString)
-			util.Fail(ctx, gin.H{}, ErrorString)
+			util.ManagerInstance.FailWithoutData(ctx, "GetLabelIDsFromLabelInfo Error")
 			return
 		}
 
@@ -107,9 +97,7 @@ func GetImgListUser(ctx *gin.Context) {
 
 	taskID, err := util.String2Int64(tempData.TaskID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "TaskID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "TaskID string2int error!!!")
 		return
 	}
 
@@ -127,16 +115,12 @@ func GetImgListUser(ctx *gin.Context) {
 
 	taskName, err := adminTaskRepositoryInstance.GetTaskNameByID(taskID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "GetTaskNameByID error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "GetTaskNameByID error!!!")
 		return
 	}
 
 	if strings.Compare("", taskName) == 0 {
-		ErrorString := ctx.Request.URL.String() + "任务不存在!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "任务不存在!!!")
 		return
 	}
 
@@ -144,9 +128,7 @@ func GetImgListUser(ctx *gin.Context) {
 
 	log.Println("taskID:", taskID, "  has", len(imageList), " images")
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "GetImageList Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "GetImageList Error!!!")
 		return
 	}
 
@@ -169,9 +151,7 @@ func GetImgListUser(ctx *gin.Context) {
 			if image.ImageThumb == "" {
 				thumb, width, height, err := fileUtilInstance.Thumb(src, dest, image.ImageName)
 				if err != nil {
-					ErrorString := ctx.Request.URL.String() + "GetImageList Error!!!"
-					log.Println(ErrorString)
-					util.Fail(ctx, gin.H{}, ErrorString)
+					util.ManagerInstance.FailWithoutData(ctx, "GetImageList Error!!!")
 					return
 				}
 				image.ImageThumb = thumb
@@ -183,9 +163,7 @@ func GetImgListUser(ctx *gin.Context) {
 
 		err = adminImageRepositoryInstance.UpdateImages(newImageList)
 		if err != nil {
-			ErrorString := ctx.Request.URL.String() + "GetImageList Error!!!"
-			log.Println(ErrorString)
-			util.Fail(ctx, gin.H{}, ErrorString)
+			util.ManagerInstance.FailWithoutData(ctx, "GetImageList Error!!!")
 			return
 		}
 	}
@@ -219,9 +197,7 @@ func GetImgUser(ctx *gin.Context) {
 
 	imageID, err := util.String2Int64(tempData.ImageID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "imageID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "imageID string2int error!!!")
 		return
 	}
 
@@ -230,9 +206,7 @@ func GetImgUser(ctx *gin.Context) {
 	image, err := adminImageRepositoryInstance.GetImage(imageID)
 	if err != nil || image.ImageID == 0 {
 		log.Println("Error:  ", err)
-		ErrorString := ctx.Request.URL.String() + "   Get Image Error error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "   Get Image Error error!!!")
 		return
 	}
 
@@ -265,17 +239,13 @@ func SaveLabelUser(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.UserID == 0 {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "Bind Data Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " --- "+ctx.Request.Method+"Bind Data Error!!!")
 		return
 	}
 
 	imageID, err := util.String2Int64(tempData.ImageIDString)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "imageID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " --- "+ctx.Request.Method+"imageID string2int error!!!")
 		return
 	}
 
@@ -283,17 +253,13 @@ func SaveLabelUser(ctx *gin.Context) {
 	adminImageRepositoryInstance := repository.AdminImageRepositoryInstance(db)
 	dataIDs, err := adminImageRepositoryInstance.GetDataIDs(tempData.UserID, imageID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "GetDataIDs error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " --- "+ctx.Request.Method+"GetDataIDs error!!!")
 		return
 	}
 
 	err = adminImageRepositoryInstance.SaveLabel(tempData, dataIDs)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "SaveLabel error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " --- "+ctx.Request.Method+"SaveLabel error!!!")
 		return
 	}
 

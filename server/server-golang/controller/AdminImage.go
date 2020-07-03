@@ -12,24 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var AdminTaskRepositoryInstance repository.AdminTaskRepository
-var AdminImageRepositoryInstance repository.AdminImageRepository
-var AdminImageLabelRepositoryInstance repository.AdminImageLabelRepository
-var AdminUserReposityInstance repository.AdminUserReposity
-var AdminVideoRepositoryInstance repository.AdminVideoRepository
-var AdminVideoLabelRepository repository.AdminVideoLabelRepository
-
-func init() {
-	db := common.GetDB()
-	AdminTaskRepositoryInstance = repository.AdminTaskRepositoryInstance(db)
-	AdminImageRepositoryInstance = repository.AdminImageRepositoryInstance(db)
-	AdminImageLabelRepositoryInstance = repository.AdminImageLabelRepositoryInstance(db)
-	AdminUserReposityInstance = repository.AdminUserReposityInstance(db)
-	AdminVideoRepositoryInstance = repository.AdminVideoRepositoryInstance(db)
-	AdminVideoLabelRepository = repository.AdminVideoLabelRepositoryInstance(db)
-	log.Println("init Repository Instance Successfully")
-}
-
 // GetImageList : PostMapping("getImgList")
 func GetImageList(ctx *gin.Context) {
 	type data struct {
@@ -46,9 +28,7 @@ func GetImageList(ctx *gin.Context) {
 
 	taskID, err := util.String2Int64(tempData.TaskID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "TaskID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "TaskID string2int error!!!")
 		return
 	}
 
@@ -66,16 +46,12 @@ func GetImageList(ctx *gin.Context) {
 
 	taskName, err := adminTaskRepositoryInstance.GetTaskNameByID(taskID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "GetTaskNameByID error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "GetTaskNameByID error!!!")
 		return
 	}
 
 	if strings.Compare("", taskName) == 0 {
-		ErrorString := ctx.Request.URL.String() + "任务不存在!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "任务不存在!!!")
 		return
 	}
 
@@ -83,9 +59,7 @@ func GetImageList(ctx *gin.Context) {
 
 	log.Println("taskID:", taskID, "  has", len(imageList), " images")
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "GetImageList Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "GetImageList Error!!!")
 		return
 	}
 
@@ -108,9 +82,7 @@ func GetImageList(ctx *gin.Context) {
 			if image.ImageThumb == "" {
 				thumb, width, height, err := fileUtilInstance.Thumb(src, dest, image.ImageName)
 				if err != nil {
-					ErrorString := ctx.Request.URL.String() + "GetImageList Error!!!"
-					log.Println(ErrorString)
-					util.Fail(ctx, gin.H{}, ErrorString)
+					util.ManagerInstance.FailWithoutData(ctx, "GetImageList Error!!!")
 					return
 				}
 				image.ImageThumb = thumb
@@ -122,9 +94,7 @@ func GetImageList(ctx *gin.Context) {
 
 		err = adminImageRepositoryInstance.UpdateImages(newImageList)
 		if err != nil {
-			ErrorString := ctx.Request.URL.String() + "GetImageList Error!!!"
-			log.Println(ErrorString)
-			util.Fail(ctx, gin.H{}, ErrorString)
+			util.ManagerInstance.FailWithoutData(ctx, "GetImageList Error!!!")
 			return
 		}
 	}
@@ -155,17 +125,13 @@ func SaveLabel(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.UserID == 0 {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "Bind Data Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Bind Data Error!!!")
 		return
 	}
 
 	imageID, err := util.String2Int64(tempData.ImageIDString)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "imageID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "imageID string2int error!!!")
 		return
 	}
 
@@ -173,17 +139,13 @@ func SaveLabel(ctx *gin.Context) {
 	adminImageRepositoryInstance := repository.AdminImageRepositoryInstance(db)
 	dataIDs, err := adminImageRepositoryInstance.GetDataIDs(tempData.UserID, imageID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "GetDataIDs error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "GetDataIDs error!!!")
 		return
 	}
 
 	err = adminImageRepositoryInstance.SaveLabel(tempData, dataIDs)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " --- " + ctx.Request.Method + "SaveLabel error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "SaveLabel error!!!")
 		return
 	}
 
@@ -202,9 +164,7 @@ func GetImg(ctx *gin.Context) {
 
 	imageID, err := util.String2Int64(tempData.ImageID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "imageID string2int error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "imageID string2int error!!!")
 		return
 	}
 
@@ -212,10 +172,7 @@ func GetImg(ctx *gin.Context) {
 	adminImageRepositoryInstance := repository.AdminImageRepositoryInstance(db)
 	image, err := adminImageRepositoryInstance.GetImage(imageID)
 	if err != nil || image.ImageID == 0 {
-		log.Println("Error:  ", err)
-		ErrorString := ctx.Request.URL.String() + "   Get Image Error error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Get Image Error error!!!")
 		return
 	}
 
@@ -252,18 +209,14 @@ func DeleteImageByID(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.ImageID == 0 {
-		ErrorString := ctx.Request.URL.String() + "Bind Parameter Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Bind Parameter Error!!!")
 		return
 	}
 
 	db := common.GetDB()
 	adminImageRepositoryInstance := repository.AdminImageRepositoryInstance(db)
 	if adminImageRepositoryInstance.DeleteFromImageByImageID(tempData.ImageID) != nil || adminImageRepositoryInstance.DeleteFromImageDataByImageID(tempData.ImageID) != nil || adminImageRepositoryInstance.DeleteFromImagePointsByImageID(tempData.ImageID) != nil {
-		ErrorString := ctx.Request.URL.String() + "Delete Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Delete Error!!!")
 		return
 	}
 
@@ -293,9 +246,7 @@ func SetFinalVersion(ctx *gin.Context) {
 
 	err := adminImageRepositoryInstance.SetFinalVersion(tempData.ImageID, tempData.UserConfirmID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " Set Final Version  Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " Set Final Version  Error!!!")
 		return
 	}
 

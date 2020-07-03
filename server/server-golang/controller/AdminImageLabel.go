@@ -18,9 +18,7 @@ func GetLabelList(ctx *gin.Context) {
 	log.Println("try to get Label List")
 	labels, err := adminImageLabelInstance.GetLabelList()
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "GetLabelList error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "GetLabelList error!!!")
 		return
 	}
 
@@ -36,9 +34,7 @@ func EditLabel(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.LabelID == 0 {
-		ErrorString := ctx.Request.URL.String() + " : Bind Label Request Data error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Bind Label Request Data error!!!")
 		return
 	}
 
@@ -46,9 +42,7 @@ func EditLabel(ctx *gin.Context) {
 	adminImageLabelInstance := repository.AdminImageLabelRepositoryInstance(db)
 	err := adminImageLabelInstance.EditLabel(tempData)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " : Edit Label error!!!" + err.Error()
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " Edit Label error!!!")
 		return
 	}
 
@@ -67,9 +61,7 @@ func AddLabel(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.LabelName == "" {
-		ErrorString := ctx.Request.URL.String() + "Bind Label Request Data error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Bind Label Request Data error!!!")
 		return
 	}
 
@@ -77,9 +69,7 @@ func AddLabel(ctx *gin.Context) {
 	adminImageLabelInstance := repository.AdminImageLabelRepositoryInstance(db)
 	err := adminImageLabelInstance.AddLabel(model.Imagelabel{LabelName: tempData.LabelName, LabelType: int(tempData.LabelType), LabelColor: tempData.LabelColor})
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + "Add Label Data error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "Add Label Data error!!!")
 		return
 	}
 
@@ -95,9 +85,7 @@ func DeleteLabel(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.LabelID == 0 {
-		ErrorString := ctx.Request.URL.String() + " : Bind Label Request Data error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " Bind Label Request Data error!!!")
 		return
 	}
 
@@ -105,31 +93,25 @@ func DeleteLabel(ctx *gin.Context) {
 	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
 	taskIDs, err := adminTaskRepositoryInstance.GetTaskIDsByLabelID(tempData.LabelID, 1)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " : GetTaskIDsByLabelID error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " GetTaskIDsByLabelID error!!!")
 		return
 	}
 
 	if len(taskIDs) > 0 {
-		ErrorString := ctx.Request.URL.String() + fmt.Sprint(" : label has been used by task -", taskIDs)
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, fmt.Sprint(" : label has been used by task -", taskIDs))
 		return
 	}
 
 	adminImageLabelInstance := repository.AdminImageLabelRepositoryInstance(db)
 	err = adminImageLabelInstance.DeleteLabel(tempData.LabelID)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " : DeleteLabel error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, "DeleteLabel error!!!")
 		return
 	}
 
 	util.Success(ctx, gin.H{}, "SUCCESS")
 }
 
-func SearchLabel(ctx *gin.Context) {
+// func SearchLabel(ctx *gin.Context) {
 
-}
+// }

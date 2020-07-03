@@ -23,9 +23,7 @@ func GetVideoLabelList(ctx *gin.Context) {
 	adminVideoLabelRepositoryInstance := repository.AdminVideoLabelRepositoryInstance(db)
 	tempVideoLabels, err := adminVideoLabelRepositoryInstance.GetVideoLabelList()
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " GetVideoLabelList  Error!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " GetVideoLabelList  Error!!!")
 		return
 	}
 
@@ -65,9 +63,7 @@ func AddVideoLabel(ctx *gin.Context) {
 	adminVideoLabelRepositoryInstance := repository.AdminVideoLabelRepositoryInstance(db)
 	err := adminVideoLabelRepositoryInstance.AddVideoLabel(tempVideoLabel)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " 添加失败，请重试!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " 添加失败，请重试!!!")
 		return
 	}
 	log.Println("添加模板成功")
@@ -96,9 +92,7 @@ func EditVideoLabel(ctx *gin.Context) {
 	adminVideoLabelRepositoryInstance := repository.AdminVideoLabelRepositoryInstance(db)
 	err := adminVideoLabelRepositoryInstance.EditVideoLabel(tempVideoLabel)
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " 修改失败，请重试!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " 修改失败，请重试!!!")
 		return
 	}
 	log.Println("修改模板成功")
@@ -116,9 +110,7 @@ func DeleteVideoLabel(ctx *gin.Context) {
 	json.NewDecoder(ctx.Request.Body).Decode(&tempData)
 
 	if tempData.LabelID == 0 {
-		ErrorString := ctx.Request.URL.String() + " 参数错误，修改失败!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " 参数错误，修改失败!!!")
 		return
 	}
 
@@ -126,18 +118,14 @@ func DeleteVideoLabel(ctx *gin.Context) {
 	adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(db)
 	taskIDs, err := adminTaskRepositoryInstance.GetTaskIDsByLabelID(tempData.LabelID, 5)
 	if len(taskIDs) > 0 {
-		ErrorString := ctx.Request.URL.String() + " 该标签已被使用，删除失败!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " 该标签已被使用，删除失败!!!")
 		return
 	}
 
 	adminVideoLabelRepositoryInstance := repository.AdminVideoLabelRepositoryInstance(db)
 	err = adminVideoLabelRepositoryInstance.DeleteVideoLabel(model.VideoLabel{LabelID: tempData.LabelID})
 	if err != nil {
-		ErrorString := ctx.Request.URL.String() + " 删除失败，请重试!!!"
-		log.Println(ErrorString)
-		util.Fail(ctx, gin.H{}, ErrorString)
+		util.ManagerInstance.FailWithoutData(ctx, " 删除失败，请重试!!!")
 		return
 	}
 	log.Println("删除模板成功")
