@@ -8,13 +8,13 @@
 
 **Annotation Platform**
 
-![Annotation-Platform](../meida/Annotation-Platform.png)
+![Annotation-Platform](../doc/Annotation-Platform.png)
 
 
 
 **Monitor**
 
-![monitor](../meida/monitor.png)
+![monitor](../doc/monitor.png)
 
 ##  🍕 **Requirements**
 

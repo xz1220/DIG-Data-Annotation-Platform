@@ -2,7 +2,7 @@
 
 ![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-> English | [中文](./media/README_zh.md)
+> English | [中文](./doc/README_zh.md)
 
 A efficient Data Annotation Platform for Computer Vision Tasks with a container monitoring system.
 
@@ -10,13 +10,13 @@ A efficient Data Annotation Platform for Computer Vision Tasks with a container 
 
 **Annotation Platform**
 
-![Annotation-Platform](./meida/Annotation-Platform.png)
+![Annotation-Platform](./doc/Annotation-Platform.png)
 
 
 
 **Monitor**
 
-![monitor](./meida/monitor.png)
+![monitor](./doc/monitor.png)
 
 ##  🍕 **Requirements**
 
