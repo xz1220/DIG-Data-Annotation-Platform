@@ -1,4 +1,0 @@
-* model
-  定义数据model
-** user.go
-- User : struct : 用户表
