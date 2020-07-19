@@ -29,7 +29,7 @@ func (manager *Manager) Start() {
 	for {
 		select {
 		case errorLog := <-manager.ErrorLog:
-			LogError(errorLog)
+			go LogError(errorLog)
 		}
 	}
 }

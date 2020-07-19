@@ -8,13 +8,25 @@ A efficient Data Annotation Platform for Computer Vision Tasks with a container 
 
 ##  :crystal_ball: **Visuals**
 
-**Annotation Platform**
+#### **Annotation Platform**
 
 ![Annotation-Platform](./doc/Annotation-Platform.png)
 
 
 
-**Monitor**
+**Architecture: SpringBoot**
+
+![server-springBoot](./doc/server-java.png)
+
+
+
+**Architecture: Golang**
+
+![server-golang](./doc/server-golang.png)
+
+
+
+#### **Monitor**
 
 ![monitor](./doc/monitor.png)
 
