@@ -114,11 +114,6 @@ func main() {
 	defer db.Close()
 	defer cache.Close()
 
-	// var user model.User
-	// // db.Where("Username = ?", "admin").First(&user)
-	// db.Where("username = ?", "admin").First(&user)
-	// // db.First(&user, 10)
-	// fmt.Println(user)
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r = CollectRoute(r, "http://localhost:9999")
