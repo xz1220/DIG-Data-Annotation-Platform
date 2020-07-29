@@ -161,3 +161,7 @@ type CocoDataSet struct {
 	Categories  []CocoCategory   `json:"categories"`
 	Keypoints   []string         `json:"keypoints"`
 }
+
+type Test struct {
+	Info string
+}
