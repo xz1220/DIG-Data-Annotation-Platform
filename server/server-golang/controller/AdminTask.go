@@ -743,6 +743,7 @@ func GetNewTaskList(ctx *gin.Context) {
 	if fileInfos, err := ImageDic.Readdir(-1); err == nil && len(fileInfos) > 0 {
 		for _, fileInfo := range fileInfos {
 			log.Println(fileInfo.Name())
+			
 			if fileInfo.IsDir() {
 				log.Println(fileInfo.Name(), "是目录")
 				newImageDic := fileUtilInstance.IMAGE_DIC + fileInfo.Name()

@@ -29,7 +29,7 @@ services:
     volumes: 
       - "/home/xingzheng/data/labelproject/home2:/home"
     ports: 
-      - 9998:5556
+      - 9997:5556
   # web-fore:
   #   container_name: labelproject-fore-jave
   #   image: labelproject-fore-spring:latest
