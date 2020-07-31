@@ -21,6 +21,13 @@ import (
 // var adminUserReposityInstance = repository.AdminUserReposityInstance(db)
 
 func Login(ctx *gin.Context) {
+
+	type userDto struct {
+		Username    string `json:"username"`
+		UserID      int64  `json:"userId"`
+		Authorities string `json:"authorities"`
+	}
+
 	db := common.GetDB()
 	cache := common.GetCache()
 	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
@@ -54,7 +61,12 @@ func Login(ctx *gin.Context) {
 	err = redisUtilInstance.AddTokenTORedis(token, requestMap.Username, ctx.Request.RemoteAddr)
 	//返回结果
 
-	util.Success(ctx, gin.H{"user": model.ToUserDto(user), "token": token}, "SUCCESS")
+	// util.Success(ctx, gin.H{"user": model.ToUserDto(user), "token": token}, "SUCCESS")
+	util.Success(ctx, gin.H{"user": userDto{
+		Username:    user.Username,
+		UserID:      user.UserID,
+		Authorities: user.Authorities,
+	}, "token": token}, "SUCCESS")
 	// util.Success(ctx, gin.H{"token": token}, "SUCCESS")
 
 	log.Println("登录成功！")

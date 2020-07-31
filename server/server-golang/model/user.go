@@ -1,5 +1,9 @@
 package model
 
+// User represents the Table user in database labelproject.
+// UserID starts at 1.
+// The length of Username and Password should be more than 1.
+// Authorities has three values: ROLE_ADMIN ROLE_USER ROLE_REVIEWER
 type User struct {
 	UserID      int64  `gorm:"AUTO_INCREMENT:primary_key;unique_index;column:user_id" form:"user_id" json:"userId"`
 	Username    string `gorm:"type:varchar(50);column:username" form:"user_name" json:"username"`
@@ -7,37 +11,37 @@ type User struct {
 	Authorities string `gorm:"type:varchar(20);column:authorities" form:"authorities" json:"authorities"`
 }
 
-// 将 User 的表名设置为 `user`
+// TableName reset the Table field
 func (User) TableName() string {
 	return "user"
 }
 
+// UserFinished the Table userfinished in database labelproject.
+// UserID starts at 1.
+// TaskID starts at 1.
+// ImageID starts at 1.
 type UserFinished struct {
 	UserID  int64 `gorm:"column:user_id" form:"user_id"`
 	TaskID  int64 `gorm:"column:task_id" form:"task_id"`
 	ImageID int64 `gorm:"column:image_id" form:"image_id"`
 }
 
+// TableName reset the Table field
 func (UserFinished) TableName() string {
 	return "userfinished"
 }
 
-type UserInfo struct {
-	Username string
-	UserID   int64
-	Labeled  int64
-}
-
+// User
 type UserDto struct {
 	Username    string `json:"username"`
-	UserId      int64  `json:"userId"`
+	UserID      int64  `json:"userId"`
 	Authorities string `json:"authorities"`
 }
 
 func ToUserDto(user User) UserDto {
 	return UserDto{
 		Username:    user.Username,
-		UserId:      user.UserID,
+		UserID:      user.UserID,
 		Authorities: user.Authorities,
 	}
 }
