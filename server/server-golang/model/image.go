@@ -1,6 +1,6 @@
 package model
 
-// Image is tabel storing the information of ids, including usercomfirmID and taskID
+// Image stores the information of ids, including usercomfirmID and taskID
 type Image struct {
 	ImageID       int64  `gorm:"primary_key;AUTO_INCREMENT;unique_index;column:image_id" form:"image_id" json:"imageId"`
 	ImageName     string `gorm:"type:varchar(1024);column:image_name" form:"image_name" json:"imageName"`
@@ -86,17 +86,19 @@ type Points struct {
 
 // Data 接受前端参数的结构体
 type DataForRequest struct {
-	LabelID   int64    `json:"labelId"`
-	LabelType int64    `json:"labelType"`
-	DataDesc  string   `json:"dataDesc"`
-	IScrowd   int      `json:"iscrowd"`
-	Point     []Points `json:"point"`
+	Point []Points `json:"point"`
+
+	LabelID   int64  `json:"labelId"`
+	LabelType int64  `json:"labelType"`
+	DataDesc  string `json:"dataDesc"`
+	IScrowd   int    `json:"iscrowd"`
 }
 
 type LabelData struct {
-	ImageIDString string            `json:"imageId"`
-	Data          []*DataForRequest `json:"data"`
-	UserID        int64             `json:"userId"`
+	Data []*DataForRequest `json:"data"`
+
+	ImageIDString string `json:"imageId"`
+	UserID        int64  `json:"userId"`
 }
 
 type Data struct {
@@ -159,5 +161,6 @@ type CocoDataSet struct {
 	Images      []CocoImage      `json:"images"`
 	Annotations []CocoAnnotation `json:"annotations"`
 	Categories  []CocoCategory   `json:"categories"`
-	Keypoints   []string         `json:"keypoints"`
+
+	Keypoints []string `json:"keypoints"`
 }

@@ -9,6 +9,7 @@ type Task struct {
 	TaskType    int64  `gorm:"column:task_type" form:"task_type"`
 }
 
+//TableName reset the Name field
 func (Task) TableName() string {
 	return "task"
 }
@@ -27,6 +28,7 @@ type Tasklabelinfo struct {
 	LabelID int64 `gorm:"column:label_id" form:"label_id"`
 }
 
+//TableName reset the Name field
 func (Tasklabelinfo) TableName() string {
 	return "tasklabelinfo"
 }
@@ -36,6 +38,7 @@ type TaskReviewerInfo struct {
 	ReviewerID int64 `gorm:"column:reviewer_id" form:"reviewer_id"`
 }
 
+//TableName reset the Name field
 func (TaskReviewerInfo) TableName() string {
 	return "taskreviewerinfo"
 }
@@ -45,6 +48,7 @@ type TaskUserInfo struct {
 	UserID int64 `gorm:"column:user_id" form:"user_id"`
 }
 
+//TableName reset the Name field
 func (TaskUserInfo) TableName() string {
 	return "taskuserinfo"
 }
@@ -55,6 +59,7 @@ type Test struct {
 	TestLong string `gorm:"type:text;column:test_long"`
 }
 
+//TableName reset the Name field
 func (Test) TableName() string {
 	return "test"
 }
@@ -65,6 +70,9 @@ type PageData struct {
 }
 
 type TaskResponse struct {
+	Users    []*User `json:"users"`
+	Reviewer []*User `json:"reviewers"`
+
 	TaskID      int64   `json:"taskId"`
 	TaskName    string  `json:"taskName"`
 	TaskDesc    string  `json:"taskDesc"`
@@ -74,8 +82,6 @@ type TaskResponse struct {
 	UserIDs     []int64 `json:"userIds"`
 	ReviewerIDs []int64 `json:"reviewerIds"`
 	LabelIDs    []int64 `json:"labelIds"`
-	Users       []*User `json:"users"`
-	Reviewer    []*User `json:"reviewers"`
 }
 
 type TaskRequest struct {
