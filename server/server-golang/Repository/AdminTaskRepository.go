@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// AdminTaskRepository defines functions for model.Task adn reliative tables.
 type AdminTaskRepository interface {
 
 	//
@@ -106,8 +107,10 @@ type adminTaskRepository struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var adminTaskRepositoryInstance = &adminTaskRepository{}
 
+// AdminTaskRepositoryInstance returns the instance of the adminTaskRepository.
 func AdminTaskRepositoryInstance(db *gorm.DB) AdminTaskRepository {
 	adminTaskRepositoryInstance.db = db
 	return adminTaskRepositoryInstance

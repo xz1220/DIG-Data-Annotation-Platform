@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// AdminUserReposity is ..
+// AdminUserReposity defines functions for model.User
 type AdminUserReposity interface {
 	//获取用户列表
 	GetUserList() ([]*model.User, error)
@@ -55,9 +55,10 @@ type adminUserReposity struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var adminUserInstance = &adminUserReposity{}
 
-//实例化存储对象
+//AdminUserReposityInstance returns the instance of adminUserReposity
 func AdminUserReposityInstance(db *gorm.DB) AdminUserReposity {
 	adminUserInstance.db = db
 	return adminUserInstance
@@ -69,11 +70,11 @@ func (r *adminUserReposity) AddUser(user model.User) error {
 	if err != nil {
 		err := r.db.Create(&user).Error
 		return err
-	} else {
-		err = fmt.Errorf("用户已存在")
-		log.Println(err)
-		return err
 	}
+
+	err = fmt.Errorf("用户已存在")
+	log.Println(err)
+	return err
 }
 
 func (r *adminUserReposity) EditUser(user model.User) error {

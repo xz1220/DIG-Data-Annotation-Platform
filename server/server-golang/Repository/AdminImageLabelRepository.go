@@ -8,6 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// AdminImageLabelRepository defines functions for model.ImageLabel
 type AdminImageLabelRepository interface {
 
 	//获取标签列表
@@ -37,8 +38,10 @@ type adminImageLabelRepository struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var adminImageLabelInstance = &adminImageLabelRepository{}
 
+// AdminImageLabelRepositoryInstance returen a instance of AdminImageLabelRepository
 func AdminImageLabelRepositoryInstance(db *gorm.DB) AdminImageLabelRepository {
 	adminImageLabelInstance.db = db
 	return adminImageLabelInstance

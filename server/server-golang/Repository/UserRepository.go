@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// UserRepository defines functions for model.User
 type UserRepository interface {
 	//
 	GetUser(userName string) ([]*model.User, error)
@@ -18,8 +19,10 @@ type userRepository struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var userRepositoryInstance = &userRepository{}
 
+// UserRepositoryInstance returns the instance of userRepository
 func UserRepositoryInstance(db *gorm.DB) UserRepository {
 	userRepositoryInstance.db = db
 	return userRepositoryInstance

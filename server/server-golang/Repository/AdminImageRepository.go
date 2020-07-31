@@ -107,9 +107,10 @@ type adminImageRepository struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var adminImageRepositoryInstance = &adminImageRepository{}
 
-//实例化
+// AdminImageRepositoryInstance returns the instance of AdminImageRepository
 func AdminImageRepositoryInstance(db *gorm.DB) AdminImageRepository {
 	adminImageRepositoryInstance.db = db
 	return adminImageRepositoryInstance

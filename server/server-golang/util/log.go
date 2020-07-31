@@ -20,10 +20,6 @@ var ManagerInstance = Manager{
 	ErrorLog: make(chan *ErrorLogData, 128),
 }
 
-func LogError(errorLogData *ErrorLogData) {
-	log.Println("URL:", errorLogData.Url, "  Info: ", errorLogData.Err)
-}
-
 func (manager *Manager) Start() {
 	log.Println("Manage Started !")
 	for {
@@ -32,6 +28,10 @@ func (manager *Manager) Start() {
 			go LogError(errorLog)
 		}
 	}
+}
+
+func LogError(errorLogData *ErrorLogData) {
+	log.Println("URL:", errorLogData.Url, "  Info: ", errorLogData.Err)
 }
 
 func (manager *Manager) SendError(url, err string) {

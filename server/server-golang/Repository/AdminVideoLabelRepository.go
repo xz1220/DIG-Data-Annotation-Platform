@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// AdminVideoLabelRepository defines functions for model.VidelLabel
 type AdminVideoLabelRepository interface {
 	//
 	GetVideoLabelList() ([]*model.VideoLabel, error)
@@ -27,8 +28,10 @@ type adminVideoLabelRepository struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var adminVideoLabelRepositoryInstance = &adminVideoLabelRepository{}
 
+// AdminVideoLabelRepositoryInstance returns the instance of adminVideoLabelRepository
 func AdminVideoLabelRepositoryInstance(db *gorm.DB) AdminVideoLabelRepository {
 	adminVideoLabelRepositoryInstance.db = db
 	return adminVideoLabelRepositoryInstance

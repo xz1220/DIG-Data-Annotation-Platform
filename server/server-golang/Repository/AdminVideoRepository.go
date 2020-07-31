@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// AdminVideoRepository defines functions for model.Video
 type AdminVideoRepository interface {
 	//
 	AddVideo(videos []*model.Video) error
@@ -60,8 +61,10 @@ type adminVideoRepository struct {
 	db *gorm.DB
 }
 
+// This statement verifies interface compliance.
 var adminVideoRepositoryInstance = &adminVideoRepository{}
 
+// AdminVideoRepositoryInstance returns the instance of adminVideoRepository
 func AdminVideoRepositoryInstance(db *gorm.DB) AdminVideoRepository {
 	adminVideoRepositoryInstance.db = db
 	return adminVideoRepositoryInstance
