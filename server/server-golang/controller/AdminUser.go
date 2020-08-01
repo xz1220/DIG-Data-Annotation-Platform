@@ -16,10 +16,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// var db = common.GetDB()
-// var cache = common.GetCache()
-// var adminUserReposityInstance = repository.AdminUserReposityInstance(db)
-
 func Login(ctx *gin.Context) {
 
 	type userDto struct {

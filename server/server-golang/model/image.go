@@ -1,3 +1,12 @@
+// Package model defines the stucts based on the tables in database. Alse contains some structs for binding request datas.
+// @Title  image.go
+// @Description package model contains four files.
+// 				image.go:
+// 				task.go:
+// 				user.go:
+//				video.go:
+// @Author  Zheng Xing  8/1/2020
+// @Update  Zheng Xing  8/1/2020
 package model
 
 // Image stores the information of ids, including usercomfirmID and taskID

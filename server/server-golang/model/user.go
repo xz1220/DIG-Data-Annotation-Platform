@@ -30,18 +30,3 @@ type UserFinished struct {
 func (UserFinished) TableName() string {
 	return "userfinished"
 }
-
-// User
-type UserDto struct {
-	Username    string `json:"username"`
-	UserID      int64  `json:"userId"`
-	Authorities string `json:"authorities"`
-}
-
-func ToUserDto(user User) UserDto {
-	return UserDto{
-		Username:    user.Username,
-		UserID:      user.UserID,
-		Authorities: user.Authorities,
-	}
-}
