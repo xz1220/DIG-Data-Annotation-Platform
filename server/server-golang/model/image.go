@@ -9,7 +9,14 @@
 // @Update  Zheng Xing  8/1/2020
 package model
 
-// Image stores the information of ids, including usercomfirmID and taskID
+// Image represents the Table image in database labelproject.
+// ImageID starts from 1.
+// ImageName is the filename of the image. Its length should be more than 1.
+// ImageThumb is the name pf thumb images that will be generated after uploading the image files, such as thumb_<original image name>.
+// UserConfirmID is a bad design since it always queals the userID of the task, not the ReviewerID or AdminID.
+// TODO：Fix the bad usage of UserConfirmID
+// TaskID starts at 1.
+// Width and Height equal to the original size of images.
 type Image struct {
 	ImageID       int64  `gorm:"primary_key;AUTO_INCREMENT;unique_index;column:image_id" form:"image_id" json:"imageId"`
 	ImageName     string `gorm:"type:varchar(1024);column:image_name" form:"image_name" json:"imageName"`
