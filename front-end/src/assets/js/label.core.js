@@ -3,7 +3,7 @@
     author:q6q64399(q6q64399@gmail.com)
 */
 "use strict";
-function LabelCore(element, labelList, data, saveCB, confirmCB, addCB, deleteCB) {
+function LabelCore(element, labelList, multi, data, saveCB, confirmCB, addCB, deleteCB) {
   const threshold = 5;
   const strokeWidth = 3;
 
@@ -32,6 +32,8 @@ function LabelCore(element, labelList, data, saveCB, confirmCB, addCB, deleteCB)
     save: element.querySelector(".label-save-label"),
     delete: element.querySelector(".label-delete-label"),
     label: element.querySelector(".label-label"),
+    // label: document.getElementById("test"),
+    // label_multi: element.querySelectorAll(".label_label-multi"),
     crowd: element.querySelector(".label-crowd"),
     desc: element.querySelector(".label-desc")
   };
@@ -175,7 +177,18 @@ function LabelCore(element, labelList, data, saveCB, confirmCB, addCB, deleteCB)
       e.querySelector("li").classList.add("active");
     },
     savelabel: function() {
-      method.createArea(panel.label.value, panel.desc.value, labelList[panel.label.value].color, panel.crowd.checked);
+      // method.createArea(panel.label.value, panel.desc.value, labelList[panel.label.value].color, panel.crowd.checked);
+      
+      const selected = panel.label.querySelectorAll("option:checked");
+      const values = Array.from(selected).map(el => el.value);
+      method.createArea(
+        values,
+        panel.desc.value,
+        labelList[panel.label.value].color,
+        panel.crowd.checked
+      );
+
+
       popup.style.display = "none";
       lock = false;
       mode == 4 && (svgLock = false);
@@ -367,15 +380,27 @@ function LabelCore(element, labelList, data, saveCB, confirmCB, addCB, deleteCB)
       for (const item of pointList) {
         item[2] == 0 && tempList.push(item);
       }
-      areaList.push({
-        id: labelList[index].id,
-        index: index,
-        desc: desc,
-        color: color,
-        type: mode == 2 || (mode == 4 && nowDrawType == 0) ? 0 : 1,
-        points: tempList,
-        iscrowd: crowd ? 1 : 0
-      });
+      // areaList.push({
+      //   id: labelList[index].id,
+      //   index: index,
+      //   desc: desc,
+      //   color: color,
+      //   type: mode == 2 || (mode == 4 && nowDrawType == 0) ? 0 : 1,
+      //   points: tempList,
+      //   iscrowd: crowd ? 1 : 0
+      // });
+      !Array.isArray(index) && (index = [index]);
+      for (const key of index) {
+        areaList.push({
+          id: labelList[key].id,
+          index: index,
+          desc: desc,
+          color: labelList[key].color,
+          type: mode == 2 || (mode == 4 && nowDrawType == 0) ? 0 : 1,
+          points: tempList,
+          iscrowd: crowd ? 1 : 0
+        });
+      }
       let pathStr = "";
       for (let point of tempList) {
         pathStr += `${point[0]},${point[1]} `;
@@ -498,7 +523,9 @@ function LabelCore(element, labelList, data, saveCB, confirmCB, addCB, deleteCB)
         e.value = key;
         e.innerHTML = item.label;
         e.style.color = item.color;
+        console.log("i:",i,"label",panel.label)
         panel.label.appendChild(e);
+        // panel.label_multi.appendChild(e);
 
         if (tempSelectId != -1 && item.id == tempSelectId) {
           p = i;

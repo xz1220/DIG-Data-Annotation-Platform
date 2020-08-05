@@ -128,14 +128,25 @@
         </div>
       </div>
       <div class="label-popup" style="display: none;">
-        <select class="label-label"></select>
+        <select class="label-label" multiple></select>
+        <!-- <el-button type="primary" disabled>多选</el-button> -->
+        <!-- <el-select class="multi-label-label" v-model="value1" multiple placeholder="请选择">
+          <el-option
+            v-for="item in label"
+            :key="item.id"
+            :label="item.label"
+            :value="item.id">
+          </el-option>
+        </el-select> -->
+        
         <div class="label-checkbox">
           <input type="checkbox" class="label-crowd" value="iscrowd" />
           <label for="iscrowd">使用RLE格式</label>
         </div>
         <textarea class="label-desc" rows="5" placeholder="描述"></textarea>
-        <button class="label-save-label" type="button">保存</button>
+        <button class="label-save-label" @click="print" type="button">保存</button>
         <button class="label-delete-label" type="button">删除</button>
+
       </div>
 
       <div class="label-list">
@@ -169,7 +180,7 @@
 
     </div>
     <!-- 类型 -->
-    <el-dialog title="添加分类标签" :visible.sync="classify.dialogVisible" width="30%">
+    <!-- <el-dialog title="添加分类标签" :visible.sync="classify.dialogVisible" width="30%">
       <el-form :inline="true">
         <el-form-item label="标签" prop="group">
           <el-select v-model="classify.select" multiple collapse-tags style="margin-left: 20px;" placeholder="请选择标签">
@@ -182,7 +193,7 @@
         <el-button @click="classify.dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="classifyAdd">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -197,6 +208,8 @@ export default {
     return {
       img: "",
       label: [],
+      select: [],
+      value1: [],
       name: "",
       area: [],
       count: 0,
@@ -223,8 +236,24 @@ export default {
         select: [],
         dialogVisible: false
       },
-      labelIndex: 0
-    };
+      labelIndex: 0,
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }]
+    }
   },
   watch: {
     id() {
@@ -232,6 +261,11 @@ export default {
     }
   },
   methods: {
+    print(){
+      console.log(this.options.value1);
+      console.log(this.label);
+      console.log(this.value1);
+    },
     showDelete(){
       console.log("delete");
       this.loadMark();
@@ -256,20 +290,6 @@ export default {
     },
     format(percentage) {
       return percentage === 100 ? '满' : `${percentage}%`;
-    },
-    classifyClick() {
-      this.classify.label = [];
-      for (const item of this.label) {
-        this.classify.label.push({ label: item.label, value: item.id });
-      }
-      this.classify.dialogVisible = true;
-    },
-    classifyAdd() {
-      this.labelCore.clean();
-      for (const id of this.classify.select) {
-        this.labelCore.setClassify(id);
-      }
-      this.classify.dialogVisible = false;
     },
     load(hasCom) {
       if (this.account.group == 1) {
@@ -377,6 +397,7 @@ export default {
       this.labelCore = new LabelCore(
         document.querySelector(".label-core"),
         this.label,
+        this.value1,
         this.area,
         data => {
           this.saveLabelArea(data);

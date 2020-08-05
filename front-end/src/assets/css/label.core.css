@@ -108,6 +108,19 @@ html {
   border-radius: 3px;
 }
 
+.label-popup .multi-label-label,
+.label-popup textarea {
+  width: 100%;
+  border: 0;
+  background-color: rgb(255, 255, 255);
+  color: #000;
+  padding: 5px 3px;
+  font-size: 15px;
+  resize: none;
+  margin: 0 0 5px 0;
+  border-radius: 3px;
+}
+
 .label-popup button {
   border: 0;
   background-color: rgba(231, 76, 60, 0.85);
