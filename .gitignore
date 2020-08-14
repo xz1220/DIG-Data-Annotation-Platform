@@ -1,37 +1,37 @@
 # /server-springBoot
-/server-springBoot/target/
-!/server-springBoot/.mvn/wrapper/maven-wrapper.jar
-!/server-springBoot/**/src/main/**
-!/server-springBoot/**/src/test/**
+/server/server-springBoot/target/
+!/server/server-springBoot/.mvn/wrapper/maven-wrapper.jar
+!/server/server-springBoot/**/src/main/**
+!/server/server-springBoot/**/src/test/**
 
 ### STS ###
-/server-springBoot/.apt_generated
-/server-springBoot/.classpath
-/server-springBoot/.factorypath
-/server-springBoot/.project
-/server-springBoot/.settings
-/server-springBoot/.springBeans
-/server-springBoot/.sts4-cache
+/server/server-springBoot/.apt_generated
+/server/server-springBoot/.classpath
+/server/server-springBoot/.factorypath
+/server/server-springBoot/.project
+/server/server-springBoot/.settings
+/server/server-springBoot/.springBeans
+/server/server-springBoot/.sts4-cache
 
 ### IntelliJ IDEA ###
-/server-springBoot/.idea
-/server-springBoot/*.iws
-/server-springBoot/*.iml
-/server-springBoot/*.ipr
+/server/server-springBoot/.idea
+/server/server-springBoot/*.iws
+/server/server-springBoot/*.iml
+/server/server-springBoot/*.ipr
 
 ### NetBeans ###
-/server-springBoot/nbproject/private/
-/server-springBoot/nbbuild/
-/server-springBoot/dist/
-/server-springBoot/nbdist/
-/server-springBoot/.nb-gradle/
-/server-springBoot/build/
+/server/server-springBoot/nbproject/private/
+/server/server-springBoot/nbbuild/
+/server/server-springBoot/dist/
+/server/server-springBoot/nbdist/
+/server/server-springBoot/.nb-gradle/
+/server/server-springBoot/build/
 
 ### log ###
-/server-springBoot/log
+/server/server-springBoot/log
 
 ## jar
-/server-springBoot/src/main/docker/*.jar
+/server/server-springBoot/src/main/docker/*.jar
 
 # front-end
 /front-end-java/.DS_Store
@@ -54,10 +54,10 @@
 /front-end-java/*.old
 
 # Server-Golang
-/server-golang/.vscode
-/server-golang/.idea
-/server-golang/.vscode/settings.json
-/server-golang/.vscode/settings.json
+/server/server-golang/.vscode
+/server/server-golang/.idea
+/server/server-golang/.vscode/settings.json
+/server/server-golang/.vscode/settings.json
 
 # front-end-gin
 /front-end/.DS_Store
