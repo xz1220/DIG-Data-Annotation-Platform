@@ -32,6 +32,8 @@ func RedisUtilInstance(cache *redis.Client) RedisUtil {
 	return redisUtilInstance
 }
 
+// AddTokenTORedis add tokens to redis.
+// It returns err when error occurs in github.com/go-redis/redis.
 func (Redis *redisUtil) AddTokenTORedis(token string, userName string, ip string) error {
 
 	err := Redis.HSetWithExpirationTime(token, "tokenValidTime", time.Now().AddDate(0, 0, 7).String(), time.Duration(time.Hour*24*7))

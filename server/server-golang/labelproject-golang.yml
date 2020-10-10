@@ -9,7 +9,7 @@ services:
       extnetwork-2:
         ipv4_address: 172.24.0.2
     volumes: 
-      - "/home/xingzheng/data/mysql/data2:/var/lib/mysql:rw"
+      - "/home/xingzheng/data/mysql/data:/var/lib/mysql:rw"
     ports: 
       - 3307:3306
 
@@ -27,7 +27,7 @@ services:
       extnetwork-2:
         ipv4_address: 172.24.0.4
     volumes: 
-      - "/home/xingzheng/data/labelproject/home2:/home"
+      - "/home/xingzheng/data/labelproject/home:/home"
     ports: 
       - 9996:5556
   # web-fore:

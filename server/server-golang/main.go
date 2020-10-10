@@ -25,7 +25,8 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 	r.Use(middleware.CORSMiddleware(foreIP)).POST("/api/login", controller.Login)
 	r.Use(middleware.CORSMiddleware(foreIP)).GET("/api/logout", controller.Logout)
 
-	admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	// admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP))
 	{
 		admin.GET("/getCount", controller.GetCount)
 		admin.GET("/getUserList", controller.GetUserList)
@@ -70,7 +71,8 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 
 	//ReviewerController
 
-	reviewer := r.Group("/api/reviewer").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	// reviewer := r.Group("/api/reviewer").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	reviewer := r.Group("/api/reviewer").Use(middleware.CORSMiddleware(foreIP))
 	{
 		reviewer.POST("/taskList", controller.TaskListReviewer)
 		reviewer.POST("/getImgList", controller.GetImageListReviewer)
@@ -80,7 +82,8 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 		reviewer.POST("/setFinalVersion", controller.SetFinalVersionReviewer)
 	}
 
-	user := r.Group("/api/user").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	// user := r.Group("/api/user").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	user := r.Group("/api/user").Use(middleware.CORSMiddleware(foreIP))
 	{
 		user.POST("/taskList", controller.TaskListUser)
 		user.POST("/getImgList", controller.GetImgListUser)

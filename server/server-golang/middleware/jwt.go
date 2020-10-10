@@ -82,6 +82,8 @@ func TokenIsExpiration(expirationTime string) (bool, error) {
 	return now.After(Oldtime), nil
 }
 
+// JwtAuth:
+// TODO: There are some issues that fuction
 func JwtAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 

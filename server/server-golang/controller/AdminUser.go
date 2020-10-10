@@ -8,7 +8,6 @@ import (
 	"labelproject-back/model"
 	"labelproject-back/util"
 	"log"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -16,21 +15,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type userDto struct {
+	Username    string `json:"username"`
+	UserID      int64  `json:"userId"`
+	Authorities string `json:"authorities"`
+}
+
+// Login check the username & password. If everything is right, writing successful message to context.
 func Login(ctx *gin.Context) {
 
-	type userDto struct {
-		Username    string `json:"username"`
-		UserID      int64  `json:"userId"`
-		Authorities string `json:"authorities"`
-	}
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
+	redisUtilInstance := util.RedisUtilInstance(common.GetCache())
 
-	db := common.GetDB()
-	cache := common.GetCache()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
-
-	//使用结构体
 	var requestMap = model.User{}
-	json.NewDecoder(ctx.Request.Body).Decode(&requestMap) //其中一种
+	json.NewDecoder(ctx.Request.Body).Decode(&requestMap)
 
 	user, err := adminUserReposityInstance.FindByUserName(requestMap.Username)
 	if err != nil {
@@ -42,38 +40,35 @@ func Login(ctx *gin.Context) {
 		util.ManagerInstance.FailWithoutData(ctx, "密码错误")
 		return
 	}
-	//TOKEN
-	token, err := middleware.ReleaseToken(ctx, user) //发放token
+
+	token, err := middleware.ReleaseToken(ctx, user)
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "系统异常")
 		return
 	}
 
-	cookie := http.Cookie{Name: "request_token", Value: "6MIhycayVQizGoweGhRvUFVARhAARiTyJ1NS6YNfiuQJ1ZHU", Expires: time.Now().AddDate(0, 0, 1)}
-	http.SetCookie(ctx.Writer, &cookie)
+	// cookie := http.Cookie{Name: "request_token", Value: "6MIhycayVQizGoweGhRvUFVARhAARiTyJ1NS6YNfiuQJ1ZHU", Expires: time.Now().AddDate(0, 0, 1)}
+	// http.SetCookie(ctx.Writer, &cookie)
 
-	redisUtilInstance := util.RedisUtilInstance(cache)
-	log.Println(ctx.Request.RemoteAddr)
 	err = redisUtilInstance.AddTokenTORedis(token, requestMap.Username, ctx.Request.RemoteAddr)
-	//返回结果
+	if err != nil {
+		util.ManagerInstance.FailWithoutData(ctx, "add token to redis error")
+		return
+	}
 
-	// util.Success(ctx, gin.H{"user": model.ToUserDto(user), "token": token}, "SUCCESS")
 	util.Success(ctx, gin.H{"user": userDto{
 		Username:    user.Username,
 		UserID:      user.UserID,
 		Authorities: user.Authorities,
 	}, "token": token}, "SUCCESS")
-	// util.Success(ctx, gin.H{"token": token}, "SUCCESS")
 
 	log.Println("登录成功！")
-
 }
 
 func Logout(ctx *gin.Context) {
-	Authorization := ctx.GetHeader("Authorization")
 
-	cache := common.GetCache()
-	redisUtilInstance := util.RedisUtilInstance(cache)
+	Authorization := ctx.GetHeader("Authorization")
+	redisUtilInstance := util.RedisUtilInstance(common.GetCache())
 
 	if Authorization != "" && strings.HasPrefix(Authorization, "Bearer ") {
 		authToken := strings.TrimLeft(Authorization, "Bearer ")
@@ -84,8 +79,7 @@ func Logout(ctx *gin.Context) {
 }
 
 func GetCount(ctx *gin.Context) {
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	taskCout, _ := adminUserReposityInstance.GetTaskCount()
 	reviewerCount, _ := adminUserReposityInstance.GetReviewerCount()
 	userCount, _ := adminUserReposityInstance.GetUserCount()
@@ -95,8 +89,7 @@ func GetCount(ctx *gin.Context) {
 
 // GetUserList
 func GetUserList(ctx *gin.Context) {
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	users, _ := adminUserReposityInstance.GetUserList()
 	util.Success(ctx, gin.H{"userList": users}, "SUCCESS")
 }
@@ -111,8 +104,7 @@ func EditUser(ctx *gin.Context) {
 	}
 	log.Println("User Information: ", user.Username)
 
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	err := adminUserReposityInstance.EditUser(user)
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Edit User Error!!!")
@@ -134,8 +126,7 @@ func AddUser(ctx *gin.Context) {
 	}
 	log.Println("User Information: ", user.Username)
 
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	err := adminUserReposityInstance.AddUser(user)
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Add User Error!!!")
@@ -158,8 +149,7 @@ func DeleteUser(ctx *gin.Context) {
 		util.ManagerInstance.FailWithoutData(ctx, "Parameter Error : Bind User Wrong!!")
 		return
 	}
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	user, err := adminUserReposityInstance.GetUserByID(tempuser.UserID)
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Parameter Error : Can't Find the User By ID!!")
@@ -192,8 +182,7 @@ func GetPendingUserList(ctx *gin.Context) {
 		return
 	}
 
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	users, err := adminUserReposityInstance.GetPendingUserList(imageID)
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Get PendingUser List Error!!!")
@@ -218,8 +207,7 @@ func GetVideoPendingUserList(ctx *gin.Context) {
 		return
 	}
 
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	users, err := adminUserReposityInstance.GetVideoPendingUserList(imageID)
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Get VideoPendingUser List Error!!!")
@@ -233,8 +221,7 @@ func GetVideoPendingUserList(ctx *gin.Context) {
 func GetListUser(ctx *gin.Context) {
 	log.Println("Get List User")
 
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	users, err := adminUserReposityInstance.GetListUser()
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Get List User Error!!!")
@@ -248,8 +235,7 @@ func GetListUser(ctx *gin.Context) {
 func GetListReviewer(ctx *gin.Context) {
 	log.Println("Get List User")
 
-	db := common.GetDB()
-	adminUserReposityInstance := repository.AdminUserReposityInstance(db)
+	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	users, err := adminUserReposityInstance.GetListReviewer()
 	if err != nil {
 		util.ManagerInstance.FailWithoutData(ctx, "Get List User Error!!!")

@@ -2,7 +2,8 @@
 //const HOST = "http://121.48.165.37:8887";
 //const HOST = "http://47.100.254.133:23333";
 //const HOST="http://47.95.0.117:8887";
-const HOST = "http://47.95.0.117:8887";
+// const HOST = "http://47.95.0.117:8887";
+const HOST="http://127.0.0.1:9996";
 //upload image files(*.png,*.jpe?g)
 const AppendFileAPI = HOST + "/api/appendFile";
 //upload compressed file(*.zip)
@@ -20,8 +21,8 @@ function ajaxPost(path, body, noCode) {
       method: "POST",
       credentials: "include",
       headers,
-      body: path == "/api/login" ? body : JSON.stringify(body)
-      // body:JSON.stringify(body)
+      // body: path == "/api/login" ? body : JSON.stringify(body)
+      body:JSON.stringify(body)
     })
       .then(response => {
         console.log(response)
