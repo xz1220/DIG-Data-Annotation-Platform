@@ -65,6 +65,7 @@ func Login(ctx *gin.Context) {
 	log.Println("登录成功！")
 }
 
+// Logout retract authorization from request and put it into blacklist in Redis.
 func Logout(ctx *gin.Context) {
 
 	Authorization := ctx.GetHeader("Authorization")
@@ -78,6 +79,8 @@ func Logout(ctx *gin.Context) {
 	util.Success(ctx, gin.H{}, "Logout Success")
 }
 
+// GetCount returns amount of tasks, users, and reviewers.
+// And it ignores the possible errors from the repository layer.
 func GetCount(ctx *gin.Context) {
 	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	taskCout, _ := adminUserReposityInstance.GetTaskCount()
@@ -87,7 +90,7 @@ func GetCount(ctx *gin.Context) {
 	util.Success(ctx, gin.H{"taskCount": taskCout, "userCount": userCount, "reviewerCount": reviewerCount}, "SUCCESS")
 }
 
-// GetUserList
+// GetUserList returns content of users with paramater userlist in the response.
 func GetUserList(ctx *gin.Context) {
 	adminUserReposityInstance := repository.AdminUserReposityInstance(common.GetDB())
 	users, _ := adminUserReposityInstance.GetUserList()
