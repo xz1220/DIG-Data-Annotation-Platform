@@ -12,13 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/**
-* taskList
-* getImgList
-* getImg
-* saveLabel
- */
 
+// TaskListUser is
 func TaskListUser(ctx *gin.Context) {
 	type data struct {
 		UserID string `json:"userId"`

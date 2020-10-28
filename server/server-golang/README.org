@@ -1,0 +1,5 @@
+#+TITLE: Readme
+* Refactor History
+** BUG
+*** TODO Authoried middleware protable does not work expectedly
+**** 10/19/2020: Commented the middleware so that any request with correct request body will be processed.

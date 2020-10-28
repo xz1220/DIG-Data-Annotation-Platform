@@ -13,6 +13,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+// CollectRoute include all route that implemted, seprate three parts of Admin or User or
+// Reviewer.
 func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 	// r.Use(middleware.CORSMiddleware())
 	// r.POST("/api/auth/register", controller.Regsiter)
