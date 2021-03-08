@@ -17,7 +17,7 @@ import (
 
 type userDto struct {
 	Username    string `json:"username"`
-	UserID      int64  `json:"userId"`
+	UserID      int64  `json:"userid"`
 	Authorities string `json:"authorities"`
 }
 

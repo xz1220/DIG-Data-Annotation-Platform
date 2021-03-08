@@ -5,7 +5,6 @@ import (
 	"labelproject-back/controller"
 	"labelproject-back/middleware"
 	"labelproject-back/util"
-	"labelproject-back/ws"
 	"log"
 	"net/http"
 
@@ -97,17 +96,6 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 }
 
 func main() {
-	// go ws.WebsocketManager.Start()
-	// go ws.WebsocketManager.SendService()
-	// go ws.WebsocketManager.SendService()
-	// go ws.WebsocketManager.SendGroupService()
-	// go ws.WebsocketManager.SendGroupService()
-	// go ws.WebsocketManager.SendAllService()
-	// go ws.WebsocketManager.SendAllService()
-	// go ws.TestSendGroup()
-	// go ws.TestSendAll()
-
-	// time.Sleep(10000000000)
 
 	go util.ManagerInstance.Start()
 
@@ -121,10 +109,10 @@ func main() {
 
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
-	r = CollectRoute(r, "http://localhost:9999")
-	r.GET("/sockjs-node", ws.WebsocketManager.WsClient)
+	// r = CollectRoute(r, "http://localhost:9998")
+	// r.GET("/sockjs-node", ws.WebsocketManager.WsClient)
 
-	// r = CollectRoute(r, "http://127.0.0.1:9999")
+	r = CollectRoute(r, "http://127.0.0.1:9999")
 
 	port := viper.GetString("server.port")
 	if port != "" {
