@@ -12,31 +12,25 @@ import (
 )
 
 // DB 关系型数据库
-var DB *gorm.DB
+var db *gorm.DB
 
-// Cache 缓存
-var Cache *redis.Client
+// cache 缓存
+var cache *redis.Client
 
 // InitDB 初始化数据库
+// 旧有的函数，
 func InitDB() {
-	//redis
-	redisURL := viper.GetString("redis.host") + ":" + viper.GetString("redis.port")
-	client := redis.NewClient(&redis.Options{
-		Addr:     redisURL,
-		Password: "", // no password set
-		DB:       0,  // use default DB
-	})
+	// db.AutoMigrate(&model.User{})
+	db = initMysql()
+	db.DB().SetMaxIdleConns(10)                   //最大空闲连接数
+	db.DB().SetMaxOpenConns(30)                   //最大连接数
+	db.DB().SetConnMaxLifetime(time.Second * 300) //设置连接空闲超时
 
-RedisConnection:
-	pong, err := client.Ping().Result()
-	log.Println(pong, err)
-	if err != nil {
-		time.Sleep(10000000000)
-		goto RedisConnection
-	} else {
-		log.Println("Redis Connect success!")
-	}
+	cache = initRedis()
+}
 
+// initMysql
+func initMysql() *gorm.DB {
 	//mysql
 	dirverName := viper.GetString("datasource.dirverName")
 	host := viper.GetString("datasource.host")
@@ -45,36 +39,88 @@ RedisConnection:
 	username := viper.GetString("datasource.username")
 	password := viper.GetString("datasource.password")
 	charset := viper.GetString("datasource.charset")
-	args := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
+	MysqlArgs := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=true",
 		username,
 		password,
 		host,
 		port,
 		database,
 		charset)
-	fmt.Println(args)
+	fmt.Println(MysqlArgs)
 
-MysqlConnection:
-	db, err := gorm.Open(dirverName, args)
-	if err != nil {
-		// panic("failed to connect database,err:" + err.Error())
-		time.Sleep(10000000000)
-		goto MysqlConnection
-	} else {
-		log.Println("Mysql Connected success!")
+	var connection *gorm.DB
+	for {
+		TempConnection, err := gorm.Open(dirverName, MysqlArgs)
+		if err != nil {
+			continue
+		} else {
+			log.Println("Mysql Connected success!")
+			connection = TempConnection
+			break
+		}
 	}
 
+	return connection
+}
+
+// initRedis
+func initRedis() *redis.Client {
+	//redis
+	redisURL := viper.GetString("redis.host") + ":" + viper.GetString("redis.port")
+
+	// 创建Redis连接
+	var client *redis.Client
+	for {
+		client = redis.NewClient(&redis.Options{
+			Addr:     redisURL,
+			Password: "", // no password set
+			DB:       0,  // use default DB
+		})
+
+		pong, err := client.Ping().Result()
+		log.Println(pong, err)
+		if err != nil {
+			continue
+		} else {
+			log.Println("Redis Connect success!")
+			break
+		}
+	}
+
+	return client
+}
+
+// NewMysqlConnection
+func NewMysqlConnection() *gorm.DB {
 	// db.AutoMigrate(&model.User{})
-	DB = db
-	Cache = client
+	db = initMysql()
+	db.DB().SetMaxIdleConns(10)                   //最大空闲连接数
+	db.DB().SetMaxOpenConns(30)                   //最大连接数
+	db.DB().SetConnMaxLifetime(time.Second * 300) //设置连接空闲超时
+
+	return db
 }
 
 // GetDB 获取关系型数据库
 func GetDB() *gorm.DB {
-	return DB
+	if err := db.DB().Ping(); err != nil {
+		db.Close()
+		db = NewMysqlConnection()
+	}
+	return db
 }
 
-// GetCache 获取缓存
+// NewRedisConnection
+func NewRedisConnection() *redis.Client {
+	cache = initRedis()
+	return cache
+}
+
+// Getcache 获取缓存
 func GetCache() *redis.Client {
-	return Cache
+	if _, err := cache.Ping().Result(); err != nil {
+		cache.Close()
+		cache = NewRedisConnection()
+	}
+	return cache
 }

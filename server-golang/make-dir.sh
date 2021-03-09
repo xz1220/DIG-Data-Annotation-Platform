@@ -1,9 +1,9 @@
 #!/bin/bash
-mkdir -p /home/kiritoghy/labelprojectdata/image/
-mkdir -p /home/kiritoghy/labelprojectdata/images/
-mkdir -p /home/kiritoghy/labelprojectdata/imagel/
-mkdir -p /home/kiritoghy/labelprojectdata/imaged/
-mkdir -p /home/kiritoghy/labelprojectdata/video/
-mkdir -p /home/kiritoghy/labelprojectdata/videod/
-mkdir -p /home/kiritoghy/labelprojectdata/videos/
+mkdir -p /home/xingzheng/labelprojectdata/image/
+mkdir -p /home/xingzheng/labelprojectdata/images/
+mkdir -p /home/xingzheng/labelprojectdata/imagel/
+mkdir -p /home/xingzheng/labelprojectdata/imaged/
+mkdir -p /home/xingzheng/labelprojectdata/video/
+mkdir -p /home/xingzheng/labelprojectdata/videod/
+mkdir -p /home/xingzheng/labelprojectdata/videos/
 

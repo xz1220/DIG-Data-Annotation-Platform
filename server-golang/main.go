@@ -5,7 +5,6 @@ import (
 	"labelproject-back/controller"
 	"labelproject-back/middleware"
 	"labelproject-back/util"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,10 +17,10 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 	// r.Use(middleware.CORSMiddleware())
 	// r.POST("/api/auth/register", controller.Regsiter)
 
-	r.StaticFS("/api/image", http.Dir("/home/kiritoghy/labelprojectdata/image"))
-	r.StaticFS("/api/thumb", http.Dir("/home/kiritoghy/labelprojectdata/images"))
-	r.StaticFS("/api/video", http.Dir("/home/kiritoghy/labelprojectdata/video"))
-	r.StaticFS("/api/videos", http.Dir("/home/kiritoghy/labelprojectdata/videos"))
+	r.StaticFS("/api/image", http.Dir(util.FileUtilInstance().IMAGE_DIC))
+	r.StaticFS("/api/thumb", http.Dir(util.FileUtilInstance().IMAGE_S_DIC))
+	r.StaticFS("/api/video", http.Dir(util.FileUtilInstance().VIDEO_DIC))
+	r.StaticFS("/api/videos", http.Dir(util.FileUtilInstance().VIDEO_S_DIC))
 
 	r.Use(middleware.CORSMiddleware(foreIP)).POST("/api/login", controller.Login)
 	r.Use(middleware.CORSMiddleware(foreIP)).GET("/api/logout", controller.Logout)
@@ -100,19 +99,13 @@ func main() {
 	go util.ManagerInstance.Start()
 
 	common.InitConfig("main")
-	common.InitDB()
-	db := common.GetDB()
-	cache := common.GetCache()
-	log.Println("successfully")
+	db := common.NewMysqlConnection()
+	cache := common.NewRedisConnection()
 	defer db.Close()
 	defer cache.Close()
 
 	gin.SetMode(gin.ReleaseMode)
-	r := gin.New()
-	// r = CollectRoute(r, "http://localhost:9998")
-	// r.GET("/sockjs-node", ws.WebsocketManager.WsClient)
-
-	r = CollectRoute(r, "http://47.95.0.117:6006")
+	r := CollectRoute(gin.New(), "http://47.95.0.117:6006")
 
 	port := viper.GetString("server.port")
 	if port != "" {

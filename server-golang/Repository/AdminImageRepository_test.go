@@ -13,6 +13,7 @@ func TestGetImageList(t *testing.T) {
 	common.InitConfig("/home/xingzheng/labelproject-back")
 	common.InitDB()
 	db := common.GetDB()
+
 	fmt.Println("successfully connect mysql")
 	imageInstance := AdminImageRepositoryInstance(db)
 	images, err := imageInstance.GetImageList(1)

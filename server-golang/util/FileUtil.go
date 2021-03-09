@@ -20,16 +20,16 @@ type fileUtil struct {
 
 var fileUtilInstance = &fileUtil{}
 
-func FileUtilInstance() fileUtil {
-	fileUtilInstance.IMAGE_DIC = "/home/kiritoghy/labelprojectdata/image/"
-	fileUtilInstance.IMAGE_S_DIC = "/home/kiritoghy/labelprojectdata/images/"
-	fileUtilInstance.IMAGE_L_DIC = "/home/kiritoghy/labelprojectdata/imagel/"
-	fileUtilInstance.IMAGE_DELETE_DIC = "/home/kiritoghy/labelprojectdata/imaged/"
-	fileUtilInstance.VIDEO_DIC = "/home/kiritoghy/labelprojectdata/video/"
-	fileUtilInstance.VIDEO_D_DIC = "/home/kiritoghy/labelprojectdata/videod/"
-	fileUtilInstance.VIDEO_S_DIC = "/home/kiritoghy/labelprojectdata/videos/"
+func FileUtilInstance() *fileUtil {
+	fileUtilInstance.IMAGE_DIC = "/home/xingzheng/labelprojectdata/image/"
+	fileUtilInstance.IMAGE_S_DIC = "/home/xingzheng/labelprojectdata/images/"
+	fileUtilInstance.IMAGE_L_DIC = "/home/xingzheng/labelprojectdata/imagel/"
+	fileUtilInstance.IMAGE_DELETE_DIC = "/home/xingzheng/labelprojectdata/imaged/"
+	fileUtilInstance.VIDEO_DIC = "/home/xingzheng/labelprojectdata/video/"
+	fileUtilInstance.VIDEO_D_DIC = "/home/xingzheng/labelprojectdata/videod/"
+	fileUtilInstance.VIDEO_S_DIC = "/home/xingzheng/labelprojectdata/videos/"
 	fileUtilInstance.LIMITED_LENGTH = 4194304
-	return *fileUtilInstance
+	return fileUtilInstance
 }
 
 func (f *fileUtil) Thumb(src, dest, imageName string) (string, int, int, error) {
