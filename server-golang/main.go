@@ -112,7 +112,7 @@ func main() {
 	// r = CollectRoute(r, "http://localhost:9998")
 	// r.GET("/sockjs-node", ws.WebsocketManager.WsClient)
 
-	r = CollectRoute(r, "http://127.0.0.1:9999")
+	r = CollectRoute(r, "http://47.95.0.117:6006")
 
 	port := viper.GetString("server.port")
 	if port != "" {

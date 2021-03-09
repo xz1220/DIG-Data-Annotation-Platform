@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	repository "labelproject-back/Repository"
 	"labelproject-back/common"
 	"labelproject-back/middleware"
@@ -29,6 +30,8 @@ func Login(ctx *gin.Context) {
 
 	var requestMap = model.User{}
 	json.NewDecoder(ctx.Request.Body).Decode(&requestMap)
+
+	fmt.Println("clientIP:", ctx.ClientIP())
 
 	user, err := adminUserReposityInstance.FindByUserName(requestMap.Username)
 	if err != nil {
