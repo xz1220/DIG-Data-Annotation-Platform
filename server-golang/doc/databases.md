@@ -1,5 +1,5 @@
-#数据库设计
-##1. user
+# 数据库设计
+## 1. user
 |字段名|描述
 |---|--------|
 |user_id|用户id|
@@ -7,7 +7,7 @@
 |password|密码|
 |authorities|权限|
 
-##2. task
+## 2. task
 |字段名|描述
 |---|--------|
 |task_id|任务id|
@@ -15,7 +15,7 @@
 |task_desc|任务描述|
 |image_number|图片数量
 
-##3. images
+## 3. images
 |字段名|描述
 |---|--------|
 |image_id|图片id|
@@ -26,7 +26,7 @@
 |width|
 |height|
 
-##4. imagelabel
+## 4. imagelabel
 |字段名|描述
 |---|--------|
 |label_id|标签id|
@@ -36,7 +36,7 @@
 
 >表明有哪些标签
 
-##5. data
+## 5. data
 |字段名|描述
 |---|--------|
 |data_id|数据id
@@ -47,31 +47,31 @@
 |label_type|
 |iscrowd|
 
-##6.userfinished 用户完成情况
+## 6.userfinished 用户完成情况
 |字段名|描述
 |---|--------|
 |user_id|用户id|
 |task_id|任务id
 |image_id|图片id
 
-##7.taskuserinfo
+## 7.taskuserinfo
 |字段名|描述
 |---|--------|
 |task_id|任务id
 |user_id|用户id
 
-##8.taskreviewerinfo
+## 8.taskreviewerinfo
 |字段名|描述
 |---|--------|
 |task_id|任务id
 |reviewer_id(user_id)|审核id
 
-##9. tasklabelinfo
+## 9. tasklabelinfo
 |字段名|描述
 |---|--------|
 |task_id|任务id
 |label_id|标签id
-##10. datapoints
+## 10. datapoints
 |字段名|描述
 |---|--------|
 |data_id|数据id
@@ -80,7 +80,7 @@
 |y|y
 |image_id|
 |user_id|
-##11. datarle
+## 11. datarle
 |字段名|描述
 |---|--------|
 |data_id|数据id
