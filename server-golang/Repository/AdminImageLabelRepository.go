@@ -59,20 +59,22 @@ func (r *adminImageLabelRepository) GetLabelList() ([]*model.Imagelabel, error) 
 
 //修改标签
 func (r *adminImageLabelRepository) EditLabel(imageLabel model.Imagelabel) error {
-	temp, err := r.FindByLabelName(imageLabel.LabelName)
-	// if err != nil {
-	// 	return fmt.Errorf("获取标签名称失败")
-	// }
 
-	if temp.LabelID != imageLabel.LabelID {
-		return fmt.Errorf("标签已存在，修改失败")
-	}
-	err = r.db.Model(&model.Imagelabel{}).Where("label_id = ?", imageLabel.LabelID).Updates(model.Imagelabel{LabelName: imageLabel.LabelName, LabelType: imageLabel.LabelType, LabelColor: imageLabel.LabelColor}).Error
-	if err != nil {
-		log.Println("修改失败请重试")
+	var err error
+	r.db.Transaction(func(tx *gorm.DB) error {
+		temp, err := r.FindByLabelName(imageLabel.LabelName)
+		if temp.LabelID != imageLabel.LabelID {
+			return fmt.Errorf("标签已存在，修改失败")
+		}
+
+		err = tx.Model(&model.Imagelabel{}).Where("label_id = ?", imageLabel.LabelID).Updates(model.Imagelabel{LabelName: imageLabel.LabelName, LabelType: imageLabel.LabelType, LabelColor: imageLabel.LabelColor}).Error
+		if err != nil {
+			log.Println("修改失败请重试")
+			return err
+		}
 		return err
-	}
-	return nil
+	})
+	return err
 }
 
 //添加标签

@@ -99,6 +99,12 @@ create table if not exists taskuserinfo
     user_id int(64) null
 );
 
+create table if not exists taskadmininfo 
+(
+    task_id int(64) null,
+    admin_id int(64) null
+);
+
 create table if not exists test
 (
     id       int(10) auto_increment

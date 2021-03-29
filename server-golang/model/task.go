@@ -53,6 +53,16 @@ func (TaskUserInfo) TableName() string {
 	return "taskuserinfo"
 }
 
+type TaskAdminInfo struct {
+	TaskID int64 `gorm:"column:task_id" form:"task_id"`
+	UserID int64 `gorm:"column:admin_id" form:"admin_id"`
+}
+
+//TableName reset the Name field
+func (TaskAdminInfo) TableName() string {
+	return "taskadmininfo"
+}
+
 type Test struct {
 	ID       int    `gorm:"AUTO_INCREMENT;primary_key;column:id"`
 	Test     string `gorm:"type:varchar(255);column:test"`

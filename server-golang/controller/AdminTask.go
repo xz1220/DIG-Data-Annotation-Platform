@@ -59,6 +59,7 @@ func GetTaskList(ctx *gin.Context) {
 			userIds = append(userIds, userInfo.UserID)
 			user, err := adminUserReposityInstance.GetUserByID(userInfo.UserID)
 			if err != nil {
+				log.Println(err)
 				util.ManagerInstance.FailWithoutData(ctx, "Get User Error!!!")
 				return
 			}
@@ -743,7 +744,7 @@ func GetNewTaskList(ctx *gin.Context) {
 	if fileInfos, err := ImageDic.Readdir(-1); err == nil && len(fileInfos) > 0 {
 		for _, fileInfo := range fileInfos {
 			log.Println(fileInfo.Name())
-			
+
 			if fileInfo.IsDir() {
 				log.Println(fileInfo.Name(), "是目录")
 				newImageDic := fileUtilInstance.IMAGE_DIC + fileInfo.Name()

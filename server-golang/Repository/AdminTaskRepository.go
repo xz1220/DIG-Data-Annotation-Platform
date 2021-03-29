@@ -52,7 +52,7 @@ type AdminTaskRepository interface {
 	//
 	GetTaskNameByImageID(imageID int64) (string, error)
 
-	//
+	// GetTaskIDs get taskIDs by userID from table "taskuserinfo"
 	GetTaskIDs(userID int64) ([]int64, error)
 
 	//
@@ -246,7 +246,7 @@ func (r *adminTaskRepository) GetTaskNameByImageID(imageID int64) (string, error
 	return task.TaskName, err
 }
 
-//
+// GetTaskIDs get taskIDs by userID from table "taskuserinfo"
 func (r *adminTaskRepository) GetTaskIDs(userID int64) ([]int64, error) {
 	var taskIDs []int64
 	var taskUserInfos []*model.TaskUserInfo

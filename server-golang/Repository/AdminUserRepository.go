@@ -65,40 +65,51 @@ func AdminUserReposityInstance(db *gorm.DB) AdminUserReposity {
 }
 
 func (r *adminUserReposity) AddUser(user model.User) error {
-	_, err := r.FindByUserName(user.Username)
-	//  判断User 是否存在
-	if err != nil {
-		err := r.db.Create(&user).Error
-		return err
-	}
+	var err error
+	r.db.Transaction(func(tx *gorm.DB) error {
+		_, err = r.FindByUserName(user.Username)
+		//  判断User 是否存在
+		if err != nil {
+			err = tx.Create(&user).Error
+			return err
+		}
 
-	err = fmt.Errorf("用户已存在")
-	log.Println(err)
+		err = fmt.Errorf("用户已存在")
+		log.Println(err)
+		return nil
+	})
 	return err
 }
 
 func (r *adminUserReposity) EditUser(user model.User) error {
+	var err error
+	r.db.Transaction(func(tx *gorm.DB) error {
+		userTemp, err := r.FindByUserName(user.Username)
+		//  判断User 是否存在
+		if err != nil {
+			log.Println(err)
+			return err
+		}
 
-	userTemp, err := r.FindByUserName(user.Username)
-	//  判断User 是否存在
-	if err != nil {
-		log.Println(err)
+		// 判断是否传参错误
+		if err == nil && userTemp.UserID != user.UserID {
+			err = fmt.Errorf("userID not matching")
+			log.Println(err)
+			return err
+		}
+
+		err = tx.Model(&user).Where("user_id = ?", user.UserID).Updates(model.User{Username: user.Username, Password: user.Password, Authorities: user.Authorities}).Error
 		return err
-	}
-
-	// 判断是否传参错误
-	if err == nil && userTemp.UserID != user.UserID {
-		err = fmt.Errorf("userID not matching")
-		log.Println(err)
-		return err
-	}
-
-	err = r.db.Model(&user).Where("user_id = ?", user.UserID).Updates(model.User{Username: user.Username, Password: user.Password, Authorities: user.Authorities}).Error
+	})
 	return err
 }
 
 func (r *adminUserReposity) DeleteUser(userID int64) error {
-	err := r.db.Where("user_id = ? ", userID).Delete(&model.User{}).Error
+	var err error
+	r.db.Transaction(func(tx *gorm.DB) error {
+		err := tx.Where("user_id = ? ", userID).Delete(&model.User{}).Error
+		return err
+	})
 	return err
 }
 
