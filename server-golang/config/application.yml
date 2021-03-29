@@ -1,5 +1,6 @@
 server:
   port: 9998
+  
 datasource:
   dirverName: mysql
   host: 127.0.0.1
