@@ -8,8 +8,8 @@ services:
     networks:
       extnetwork-2:
         ipv4_address: 172.24.0.2
-    volumes: 
-      - "/home/xingzheng/data/mysql/data:/var/lib/mysql:rw"
+    # volumes: 
+    #   - "/home/xingzheng/data/mysql/data:/var/lib/mysql:rw"
     ports: 
       - 3306:3306
 

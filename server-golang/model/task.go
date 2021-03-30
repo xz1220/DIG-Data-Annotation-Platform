@@ -73,32 +73,3 @@ type Test struct {
 func (Test) TableName() string {
 	return "test"
 }
-
-type PageData struct {
-	Page  int64 `json:"page"`
-	Limit int64 `json:"limit"`
-}
-
-type TaskResponse struct {
-	Users    []*User `json:"users"`
-	Reviewer []*User `json:"reviewers"`
-
-	TaskID      int64   `json:"taskId"`
-	TaskName    string  `json:"taskName"`
-	TaskDesc    string  `json:"taskDesc"`
-	ImageNumber int64   `json:"imageNumber"`
-	TaskType    int64   `json:"taskType"`
-	Finish      int64   `json:"finish"`
-	UserIDs     []int64 `json:"userIds"`
-	ReviewerIDs []int64 `json:"reviewerIds"`
-	LabelIDs    []int64 `json:"labelIds"`
-}
-
-type TaskRequest struct {
-	TaskID      int64   `json:"taskId"`
-	TaskName    string  `json:"taskName"`
-	TaskDesc    string  `json:"taskDesc"`
-	UserIDs     []int64 `json:"userIds"`
-	ReviewerIDs []int64 `json:"reviewerIds"`
-	LabelIDs    []int64 `json:"labelIds"`
-}

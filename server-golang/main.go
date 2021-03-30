@@ -11,8 +11,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// CollectRoute include all route that implemted, seprate three parts of Admin or User or
-// Reviewer.
+// CollectRoute include all route that implemted, seprate three parts of Admin or User or Reviewer.
 func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 	// r.Use(middleware.CORSMiddleware())
 	// r.POST("/api/auth/register", controller.Regsiter)
@@ -105,7 +104,7 @@ func main() {
 	defer cache.Close()
 
 	gin.SetMode(gin.ReleaseMode)
-	r := CollectRoute(gin.New(), "http://47.95.0.117:6006")
+	r := CollectRoute(gin.New(), "http://127.0.0.1:9999")
 
 	port := viper.GetString("server.port")
 	if port != "" {

@@ -2,7 +2,7 @@ create database labelproject;
 
 use labelproject;
 
-
+-- Image
 create table if not exists image
 (
     image_id        int(64) auto_increment,
@@ -66,6 +66,7 @@ create table if not exists imagelabel
 alter table imagelabel
     add primary key (label_id);
 
+-- Task
 create table if not exists task
 (
     task_id      int(64) auto_increment,
@@ -105,14 +106,7 @@ create table if not exists taskadmininfo
     admin_id int(64) null
 );
 
-create table if not exists test
-(
-    id       int(10) auto_increment
-        primary key,
-    test     varchar(255) null,
-    testLong text         null
-);
-
+-- User
 create table if not exists user
 (
     user_id     int(64) auto_increment,
@@ -136,6 +130,8 @@ create table if not exists userfinished
     task_id  int(64) null,
     image_id int(64) null
 );
+
+-- video
 
 create table if not exists video
 (
@@ -179,4 +175,11 @@ create table if not exists videolabel
 create index videolabel_label_id_index
     on videolabel (label_id);
 
-
+-- Test
+create table if not exists test
+(
+    id       int(10) auto_increment
+    primary key,
+    test     varchar(255) null,
+    testLong text         null
+    );
