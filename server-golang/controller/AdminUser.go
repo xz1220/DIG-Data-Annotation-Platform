@@ -165,11 +165,11 @@ func DeleteUser(ctx *gin.Context) {
 
 	// 查找是否已有任务分配给用户
 	// adminTaskRepositoryInstance := repository.AdminTaskRepositoryInstance(common.GetDB())
-	if user.Authorities == "ROLE_ADMIN" {
+	if user.Authorities == common.RoleAdmin {
 
-	} else if user.Authorities == "ROLE_USER" {
+	} else if user.Authorities == common.RoleUser {
 
-	} else if user.Authorities == "ROLE_REVIEWER" {
+	} else if user.Authorities == common.RoleAdmin {
 
 	}
 

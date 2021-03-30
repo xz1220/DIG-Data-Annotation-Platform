@@ -1,6 +1,7 @@
 package util
 
 import (
+	"labelproject-back/common"
 	"log"
 	"os"
 
@@ -15,20 +16,20 @@ type fileUtil struct {
 	VIDEO_DIC        string
 	VIDEO_D_DIC      string
 	VIDEO_S_DIC      string
-	LIMITED_LENGTH   int64
+	LIMITED_LENGTH   int
 }
 
 var fileUtilInstance = &fileUtil{}
 
 func FileUtilInstance() *fileUtil {
-	fileUtilInstance.IMAGE_DIC = "/home/xingzheng/labelprojectdata/image/"
-	fileUtilInstance.IMAGE_S_DIC = "/home/xingzheng/labelprojectdata/images/"
-	fileUtilInstance.IMAGE_L_DIC = "/home/xingzheng/labelprojectdata/imagel/"
-	fileUtilInstance.IMAGE_DELETE_DIC = "/home/xingzheng/labelprojectdata/imaged/"
-	fileUtilInstance.VIDEO_DIC = "/home/xingzheng/labelprojectdata/video/"
-	fileUtilInstance.VIDEO_D_DIC = "/home/xingzheng/labelprojectdata/videod/"
-	fileUtilInstance.VIDEO_S_DIC = "/home/xingzheng/labelprojectdata/videos/"
-	fileUtilInstance.LIMITED_LENGTH = 4194304
+	fileUtilInstance.IMAGE_DIC = common.IMAGE_DIC
+	fileUtilInstance.IMAGE_S_DIC = common.IMAGE_S_DIC
+	fileUtilInstance.IMAGE_L_DIC = common.IMAGE_L_DIC
+	fileUtilInstance.IMAGE_DELETE_DIC = common.IMAGE_DELETE_DIC
+	fileUtilInstance.VIDEO_DIC = common.VIDEO_DIC
+	fileUtilInstance.VIDEO_D_DIC = common.VIDEO_D_DIC
+	fileUtilInstance.VIDEO_S_DIC = common.VIDEO_S_DIC
+	fileUtilInstance.LIMITED_LENGTH = common.LIMITED_LENGTH
 	return fileUtilInstance
 }
 

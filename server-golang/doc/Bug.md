@@ -18,6 +18,7 @@ func DeleteUser(ctx *gin.Context) {
 	if user.Authorities == "ROLE_ADMIN" {
         // 判断是否Admin用户被分配给了任务
         // 如果有，则删除失败
+        // TODO: 缺乏TaskAdminInfo表格，以及相关到操作
 	} else if user.Authorities == "ROLE_USER" {
         // 判断是否User用户被分配给了任务
         // 如果有，则删除失败
