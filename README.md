@@ -2,92 +2,79 @@
 
 ![Docker Build Status badge](https://img.shields.io/badge/docker%20build-passing-brightgreen)[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-> English | [中文](./doc/README_zh.md)
-
-A efficient Data Annotation Platform for Computer Vision Tasks with a container monitoring system.
+基于前后端分离的数据标注平台与容器监控系统，支持docker-compose 快速一键部署
+> [English](./doc/README_En.md) | 中文
 
 ##  :crystal_ball: **Visuals**
 
-#### **Annotation Platform**
+**Annotation Platform**
 
-![Annotation-Platform](./doc/Annotation-Platform.png)
+<img src="./doc/Annotation-Platform.png" alt="Annotation-Platform" style="zoom:50%;" />
 
+**Architecture**
 
-
-**Architecture: SpringBoot**
-
-![server-springBoot](./doc/server-java.png)
+<img src="./doc/server-golang.png" alt="server-golang" style="zoom:50%;" />
 
 
+**Monitor**
 
-**Architecture: Golang**
-
-![server-golang](./doc/server-golang.png)
-
-
-
-#### **Monitor**
-
-![monitor](./doc/monitor.png)
+<img src="./doc/monitor.png" alt="monitor" style="zoom:50%;" />
 
 ##  🍕 **Requirements**
 
 ### Monitor
 
-- docker-ce 
+- docker-ce
 - docker-compose
 
 ### Annotation Platform
 
-#### SpringBoot+Vue.js
-
-- jdk >=1.8
-- Mysql Version == 5.7 or 8.0
-
-#### Gin + Vue.js
+#### Go + Vue.js
 
 - Golang version >= 1.13
 - Gin v1
 - Gorm v1
-
+- Mysql Version == 5.7 or 8.0
 
 
 ##  🚍 **Installation**
 
-### 🚀 Quick Start
+### 🚀 Quick Start (local)
 
-####  Annotation Platform ： SpringBoot + Vue.js
+####  Annotation Platform
 
 **Preparation**
 
-- make sure you have installed docker-ce and docker-compose
+- 确保安装docker 以及 docker-compose
 
-- Clone library from Github and build a new image
+- 克隆代码库
 
 ```shell
-git clone https://github.com/xz1220/labelproject-foreground-spring.git
-cd src/model/ && vim Service.js // modify HOST to the IP address of back-end 
+git clone https://github.com/xz1220/DIG-Data-Annotation-Platform.git
+# 修改前端配置并运行
+cd DIG-Data-Annotation-Platform/front-end/src/model/ && vim Service.js // 修改HOST 对应后端IP地址 
 cnpm install && cnpm run build 
-docker build -t <image_name> .
-vim compose/labelproject-<java/golang>.yml // modify web-fore.image to the new fore-end image name
+# 修改后端配置并运行
+cd DIG-Data-Annotation-Platform/server-golang/ && vim main.go
+# 修改第107行 r := CollectRoute(gin.New(), "http://127.0.0.1:9999")， 将IP替换为前端IP
+docker-compose -f ./doc/labelproject-golang.yml # 启动mysql & redis 镜像
+go run main.go # 启动后端程序
 ```
 
 **Installation By docker-compose**
-
+在front-end和server-golang的目录下，都存放着Dockerfile文件，方便容器化前后端。可自定义修改labelproject-golang.yml文件，实现一键部署。
 ```shell
-docker-compose -f compose/labelproject-<java/golang>.yml up // back-end: bind port to 8887 fore-end: bind port to 8889 
+docker build -t <your imageName:tag> .
 ```
-
 ##### Features
 
-- Database (labelproject) and related tables will be created automatically after starting MYSQL container.
-- labelproject-back(spring-boot) will automatically create a directory to hold the files and connect to the MYSQL and Redis after cteated.
 
-#### Monitor
+
+#### Monitor 
 
 **Preparation** 
 
-- make sure you have installed docker-ce and docker-compose
+- 确保安装docker 以及 docker-compose
 
 **Installation**
 
@@ -101,17 +88,17 @@ docker-compose -f monitor.yml up
 
 ##  🚩 **Usage**
 
-#### 🖼 Annotation Platform （installed locally)
+#### 🖼 Annotation Platform
 
-- Initialized user name ：admin  password ：admin
+- 初始化用户名：admin 密码：admin
 
-### 🖥 Monitor (installed locally)
+### 🖥 Monitor
 
--  Fore-end URL： http://localhost:8888
--  Database initialization parameters
+- 入口 ： http://localhost:8888
+- 初始化数据库
   - URL：http://172.23.0.2:8086
-  - Username and password are empty
-- Select the default dashboard
+  - 用户名免密为空
+- 选取默认面板进入系统
 
 
 
