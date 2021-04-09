@@ -21,6 +21,24 @@ func TestGetUserList(t *testing.T) {
 	fmt.Println(len(userList))
 }
 
+func BenchmarkGetUserList(b *testing.B) {
+	b.StopTimer()
+	common.InitConfig("/Users/xingzheng/DIG-Data-Annotation-Platform/server-golang")
+	common.InitDB()
+	db := common.GetDB()
+	fmt.Println("successfully connect mysql")
+	userInstance := AdminUserReposityInstance(db)
+	b.StartTimer()
+	count := 0
+	for i := 0; i < b.N; i++ {
+		users, _ := userInstance.GetUserList()
+		if users != nil {
+			count++
+		}
+	}
+	fmt.Println(count)
+}
+
 func TestAddUser(t *testing.T) {
 	common.InitConfig("/home/xingzheng/labelproject-back")
 	common.InitDB()

@@ -5,7 +5,7 @@
 基于前后端分离的数据标注平台与容器监控系统，支持docker-compose 快速一键部署
 > [English](./doc/README_En.md) | 中文
 
-##  :crystal_ball: **Visuals**
+##  :crystal_ball: Visuals
 
 **Annotation Platform**
 
@@ -20,7 +20,11 @@
 
 <img src="./doc/monitor.png" alt="monitor" style="zoom:50%;" />
 
-##  🍕 **Requirements**
+## 🍞 Features
+- 面对场景为小规模多人图片/视频数据标注，支持多人在线标注数据，支持任务划分、权限管理等等
+- 支持多种图片数据标注需求，例如矩形和多边形标注等等
+
+##  🍕 Requirements
 
 ### Monitor
 
@@ -35,9 +39,9 @@
 - Gin v1
 - Gorm v1
 - Mysql Version == 5.7 or 8.0
+详细文档在[back-end](./server-golang/README.md)
 
-
-##  🚍 **Installation**
+##  🚍 Installation
 
 ### 🚀 Quick Start (local)
 
@@ -47,7 +51,7 @@
 
 - 确保安装docker 以及 docker-compose
 
-- 克隆代码库
+- 克隆代码库, 修改配置并运行
 
 ```shell
 git clone https://github.com/xz1220/DIG-Data-Annotation-Platform.git
@@ -66,9 +70,6 @@ go run main.go # 启动后端程序
 ```shell
 docker build -t <your imageName:tag> .
 ```
-##### Features
-
-
 
 #### Monitor 
 
@@ -84,8 +85,6 @@ cd LabelDoc/monitor
 docker-compose -f monitor.yml up
 ```
 
-
-
 ##  🚩 **Usage**
 
 #### 🖼 Annotation Platform
@@ -100,11 +99,4 @@ docker-compose -f monitor.yml up
   - 用户名免密为空
 - 选取默认面板进入系统
 
-
-
-## Reference
-
-[Docker Document](https://docs.docker.com/)
-
-[Golang Document](https://golang.org/doc/)
 
