@@ -36,22 +36,22 @@ func RedisUtilInstance(cache *redis.Client) RedisUtil {
 // It returns err when error occurs in github.com/go-redis/redis.
 func (Redis *redisUtil) AddTokenTORedis(token string, userName string, ip string) error {
 
-	err := Redis.HSetWithExpirationTime(token, "tokenValidTime", time.Now().AddDate(0, 0, 7).String(), time.Duration(time.Hour*24*7))
+	err := Redis.HSetWithExpirationTime(token, "tokenValidTime", time.Now().AddDate(0, 0, 7).String(), time.Duration(time.Minute))
 	if err != nil {
 		return err
 	}
 
-	err = Redis.HSetWithExpirationTime(token, "expirationTime", time.Now().Add(time.Hour).String(), time.Duration(time.Hour*24*7))
+	err = Redis.HSetWithExpirationTime(token, "expirationTime", time.Now().Add(time.Minute).String(), time.Duration(time.Minute))
 	if err != nil {
 		return err
 	}
 
-	err = Redis.HSetWithExpirationTime(token, "username", userName, time.Duration(time.Hour*24*7))
+	err = Redis.HSetWithExpirationTime(token, "username", userName, time.Duration(time.Minute))
 	if err != nil {
 		return err
 	}
 
-	err = Redis.HSetWithExpirationTime(token, "ip", ip, time.Duration(time.Hour*24*7))
+	err = Redis.HSetWithExpirationTime(token, "ip", ip, time.Duration(time.Minute))
 	if err != nil {
 		return err
 	}

@@ -22,6 +22,13 @@ var ManagerInstance = Manager{
 
 func (manager *Manager) Start() {
 	log.Println("Manage Started !")
+
+	//
+	go func() {
+		file := FileUtilInstance()
+		file.CreateBaseDir()
+	}()
+
 	for {
 		select {
 		case errorLog := <-manager.ErrorLog:

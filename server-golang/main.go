@@ -24,8 +24,8 @@ func CollectRoute(r *gin.Engine, foreIP string) *gin.Engine {
 	r.Use(middleware.CORSMiddleware(foreIP)).POST("/api/login", controller.Login)
 	r.Use(middleware.CORSMiddleware(foreIP)).GET("/api/logout", controller.Logout)
 
-	// admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
-	admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP))
+	admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP)).Use(middleware.JwtAuth())
+	// admin := r.Group("/api/admin").Use(middleware.CORSMiddleware(foreIP))
 	{
 		admin.GET("/getCount", controller.GetCount)
 		admin.GET("/getUserList", controller.GetUserList)

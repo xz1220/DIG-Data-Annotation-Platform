@@ -78,7 +78,9 @@ func GetImageList(ctx *gin.Context) {
 		for _, image := range newImageList {
 			src := fileUtilInstance.IMAGE_DIC + taskName + "/" + image.ImageName
 			dest := fileUtilInstance.IMAGE_S_DIC + taskName
+			log.Println("src: ", src)
 
+			// 缩略图不存在 生成缩略图
 			if image.ImageThumb == "" {
 				thumb, width, height, err := fileUtilInstance.Thumb(src, dest, image.ImageName)
 				if err != nil {

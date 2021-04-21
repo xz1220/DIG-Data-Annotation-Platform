@@ -6,7 +6,6 @@ import (
 	"labelproject-back/model"
 	"labelproject-back/util"
 	"log"
-	"net/http"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
@@ -87,11 +86,11 @@ func TokenIsExpiration(expirationTime string) (bool, error) {
 func JwtAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		cookie, _ := c.Request.Cookie("request_token")
-		if cookie == nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"msg": "请先登陆"})
-			c.Abort()
-		}
+		// cookie, _ := c.Request.Cookie("request_token")
+		// if cookie == nil {
+		// 	c.JSON(http.StatusUnauthorized, gin.H{"msg": "请先登陆"})
+		// 	c.Abort()
+		// }
 
 		authorization := c.Request.Header.Get("Authorization")
 		// var username string = ""
@@ -101,6 +100,7 @@ func JwtAuth() gin.HandlerFunc {
 			util.Response(c, 500, 500, gin.H{}, "用户未认证")
 			c.Abort()
 		} else if tokenstring := strings.TrimLeft(authorization, "Bearer"); tokenstring != "" {
+			// 去除空格
 			tokenstring = tokenstring[1:]
 			_, claims, err := ParseToken(tokenstring)
 			if err != nil {
@@ -108,6 +108,7 @@ func JwtAuth() gin.HandlerFunc {
 				log.Println("Token:", tokenstring)
 				log.Println(err)
 				c.Abort()
+				return
 			}
 			// username := claims.UserName
 			// OldIP := claims.IP["ip"]
@@ -116,7 +117,7 @@ func JwtAuth() gin.HandlerFunc {
 			redisUtilInstance := util.RedisUtilInstance(cache)
 
 			if isExit, _ := redisUtilInstance.IsBlackList(tokenstring); isExit {
-				log.Println("用户%s的TOKEN在黑名单种，拒绝访问", claims.UserName)
+				log.Printf("用户%s的TOKEN在黑名单种，拒绝访问 \n", claims.UserName)
 				util.Response(c, 500, 500, gin.H{}, "TOKEN in the Blacklist!!!")
 				c.Abort()
 				return

@@ -4,6 +4,7 @@ import (
 	"labelproject-back/common"
 	"log"
 	"os"
+	"reflect"
 
 	"github.com/disintegration/imaging"
 )
@@ -30,6 +31,7 @@ func FileUtilInstance() *fileUtil {
 	fileUtilInstance.VIDEO_D_DIC = common.VIDEO_D_DIC
 	fileUtilInstance.VIDEO_S_DIC = common.VIDEO_S_DIC
 	fileUtilInstance.LIMITED_LENGTH = common.LIMITED_LENGTH
+	log.Println("FileUtilInstance() :", fileUtilInstance.IMAGE_DIC)
 	return fileUtilInstance
 }
 
@@ -58,4 +60,27 @@ func (f *fileUtil) Thumb(src, dest, imageName string) (string, int, int, error) 
 	}
 	return "thumb_" + imageName, width, height, nil
 
+}
+
+func (f *fileUtil) CreateDir(path interface{}) error {
+	err := os.MkdirAll(path.(string), 0777)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (f *fileUtil) CreateBaseDir() {
+
+	dirs := FileUtilInstance()
+	t := reflect.TypeOf(*dirs)
+	v := reflect.ValueOf(*dirs)
+
+	for i := 0; i < t.NumField(); i++ {
+		if t.Field(i).Name != "LIMITED_LENGTH" {
+			if _, err := os.Stat(v.Field(i).String()); os.IsNotExist(err) {
+				f.CreateDir(v.Field(i).Interface())
+			}
+		}
+	}
 }
